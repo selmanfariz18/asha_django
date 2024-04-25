@@ -1,369 +1,241 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - codingnepalweb.com -->
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <style>
+        body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom, #ffd2d2, #ffc3c3);
+    }
     
-    <!----======== CSS ======== -->
-    <style>
-                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        body{
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #4070f4;
-        }
-        .container{
-            position: relative;
-            max-width: 900px;
-            width: 100%;
-            border-radius: 6px;
-            padding: 30px;
-            margin: 0 15px;
-            background-color: #fff;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        }
-        .container header{
-            position: relative;
-            font-size: 20px;
-            font-weight: 600;
-            color: #333;
-        }
-        .container header::before{
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            height: 3px;
-            width: 27px;
-            border-radius: 8px;
-            background-color: #4070f4;
-        }
-        .container form{
-            position: relative;
-            margin-top: 16px;
-            min-height: 490px;
-            background-color: #fff;
-            overflow: hidden;
-        }
-        .container form .form{
-            position: absolute;
-            background-color: #fff;
-            transition: 0.3s ease;
-        }
-        .container form .form.second{
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(100%);
-        }
-        form.secActive .form.second{
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateX(0);
-        }
-        form.secActive .form.first{
-            opacity: 0;
-            pointer-events: none;
-            transform: translateX(-100%);
-        }
-        .container form .title{
-            display: block;
-            margin-bottom: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            margin: 6px 0;
-            color: #333;
-        }
-        .container form .fields{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-        form .fields .input-field{
-            display: flex;
-            width: calc(100% / 3 - 15px);
-            flex-direction: column;
-            margin: 4px 0;
-        }
-        .input-field label{
-            font-size: 12px;
-            font-weight: 500;
-            color: #2e2e2e;
-        }
-        .input-field input, select{
-            outline: none;
-            font-size: 14px;
-            font-weight: 400;
-            color: #333;
-            border-radius: 5px;
-            border: 1px solid #aaa;
-            padding: 0 15px;
-            height: 42px;
-            margin: 8px 0;
-        }
-        .input-field input :focus,
-        .input-field select:focus{
-            box-shadow: 0 3px 6px rgba(0,0,0,0.13);
-        }
-        .input-field select,
-        .input-field input[type="date"]{
-            color: #707070;
-        }
-        .input-field input[type="date"]:valid{
-            color: #333;
-        }
-        .container form button, .backBtn{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 45px;
-            max-width: 200px;
-            width: 100%;
-            border: none;
-            outline: none;
-            color: #fff;
-            border-radius: 5px;
-            margin: 25px 0;
-            background-color: #4070f4;
-            transition: all 0.3s linear;
-            cursor: pointer;
-        }
-        .container form .btnText{
-            font-size: 14px;
-            font-weight: 400;
-        }
-        form button:hover{
-            background-color: #265df2;
-        }
-        form button i,
-        form .backBtn i{
-            margin: 0 6px;
-        }
-        form .backBtn i{
-            transform: rotate(180deg);
-        }
-        form .buttons{
-            display: flex;
-            align-items: center;
-        }
-        form .buttons button , .backBtn{
-            margin-right: 14px;
-        }
+    .sidebar {
+        height: 100%;
+        width: 200px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #333;
+        padding-top: 20px;
+    }
+    
+    .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .sidebar li {
+        padding: 10px;
+    }
+    
+    .sidebar a {
+        color: white;
+        text-decoration: none;
+    }
 
-        @media (max-width: 750px) {
-            .container form{
-                overflow-y: scroll;
-            }
-            .container form::-webkit-scrollbar{
-            display: none;
-            }
-            form .fields .input-field{
-                width: calc(100% / 2 - 15px);
-            }
-        }
-
-        @media (max-width: 550px) {
-            form .fields .input-field{
-                width: 100%;
-            }
-        }
-    </style>
-     
-    <!----===== Iconscout CSS ===== -->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
-   <title>Responsive Regisration Form </title>
+    .sidebar {
+        margin-top: auto; /* Push to bottom */
+    }
+    
+    .back-button {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px; /* Adjust as needed */
+    }
+    
+    .back-button button {
+        padding: 10px 20px;
+        background: linear-gradient(to bottom, #D1B1CB ,#DDCAD9);
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 150px;
+    }
+    
+    .back-button button:hover {
+        background-color: white;
+    }
+    
+    .content {
+        margin-left: 200px;
+        padding: 20px;
+        
+    }
+    
+    .profile-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(to bottom, #D1B1CB ,#DDCAD9); /* Background color for the form */
+        border-radius: 20px; /* Rounded corners */
+        padding: 40px; /* Padding for the form */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Projection effect */
+        max-width: 800px;
+        width: 80%;
+        margin:0  auto;
+    }
+    
+    .profile-photo {
+        margin-bottom: 30px;
+    }
+    
+    .profile-photo img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: flex;
+    }
+    
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        flex: 0 1 calc(32% - 10px);
+        margin-right: 27px;
+        margin-bottom: 10px;
+        
+    }
+    
+    .form-group:last-child {
+        margin-right: 0;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 10px; /* Space between label and input */
+    }
+    
+    .form-group input {
+        width: calc(100%- 50px ); /* Adjusted width of input box */
+        padding: 12px;
+        border: 1.5px solid black;
+        border-radius: 5px;
+        box-sizing: border-box;
+        
+    }
+    
+    .buttons {
+        margin-top: 30px;
+        text-align: center; /* Center align buttons */
+    }
+    
+    .buttons button {
+        padding: 14px 28px; /* Increased padding for buttons */
+        margin-right: 10px;
+        background: linear-gradient(to bottom, #D1B1CB ,#DDCAD9);
+        border-color: #f66b6b;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .buttons button:last-child {
+        margin-right: 0;
+    } 
+  
+  
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>Registration</header>
-
-        <form action="#">
-            <div class="form first">
-                <div class="details personal">
-                    <span class="title">Personal Details</span>
-
-                    <div class="fields">
-                        <div class="input-field">
-                            <label>Full Name</label>
-                            <input type="text" placeholder="Enter your name" required>
-                        </div>
-                    
-                        <div class="input-field">
-                            <label>house number</label>
-                            <input type="url" placeholder="Enter your house number" required>
-                        </div>
-                    
-                        <div class="input-field">
-                            <label>Date of Birth</label>
-                            <input type="date" placeholder="Enter birth date" required>
-                        </div>
-                        
-
-                        <div class="input-field">
-                            <label>Mobile Number</label>
-                            <input type="number" placeholder="Enter mobile number" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Gender</label>
-                            <select required>
-                                <option disabled selected>Select gender</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Others</option>
-                            </select>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Occupation</label>
-                            <input type="text" placeholder="Enter your ccupation" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="details ID">
-                    <span class="title">health Details</span>
-
-                    <div class="fields">
-                        <div class="input-field">
-                            <label>disease</label>
-                            <input type="text" placeholder="Enter disease" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>hospital name</label>
-                            <input type="text" placeholder="Enter hospital name" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>years</label>
-                            <input type="number" placeholder="Enter how many years" required>
-                        </div>
-
-                       
-                    </div>
-
-                    <button class="nextBtn">
-                        <span class="btnText">Next</span>
-                        <i class="uil uil-navigator"></i>
-                    </button>
-                </div> 
-            </div>
-
-            <div class="form second">
-                <div class="details address">
-                    <span class="title">Address Details</span>
-
-                    <div class="fields">
-                        <div class="input-field">
-                            <label>Address Type</label>
-                            <input type="text" placeholder="Permanent or Temporary" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Nationality</label>
-                            <input type="text" placeholder="Enter nationality" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>State</label>
-                            <input type="text" placeholder="Enter your state" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>District</label>
-                            <input type="text" placeholder="Enter your district" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Block Number</label>
-                            <input type="number" placeholder="Enter block number" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Ward Number</label>
-                            <input type="number" placeholder="Enter ward number" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="details family">
-                    <span class="title">Family Details</span>
-
-                    <div class="fields">
-                        <div class="input-field">
-                            <label>Father Name</label>
-                            <input type="text" placeholder="Enter father name" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Mother Name</label>
-                            <input type="text" placeholder="Enter mother name" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Grandfather</label>
-                            <input type="text" placeholder="Enter grandfther name" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Spouse Name</label>
-                            <input type="text" placeholder="Enter spouse name" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Father in Law</label>
-                            <input type="text" placeholder="Father in law name" required>
-                        </div>
-
-                        <div class="input-field">
-                            <label>Mother in Law</label>
-                            <input type="text" placeholder="Mother in law name" required>
-                        </div>
-                    </div>
-
-                    <div class="buttons">
-                        <div class="backBtn">
-                            <i class="uil uil-navigator"></i>
-                            <span class="btnText">Back</span>
-                        </div>
-                        
-                        <button class="sumbit">
-                            <span class="btnText">Submit</span>
-                            <i class="uil uil-navigator"></i>
-                        </button>
-                    </div>
-                </div> 
-            </div>
-        </form>
+  <div class="sidebar">
+    <ul>
+      <li><a href="setting.html">View Profile</a></li>
+      <hr class="separator">
+      <li><a href="pass.html">Change Password</a></li>
+      <hr class="separator">
+      <li><a href="logout_user">Logout</a></li>
+      <hr class="separator">
+    </ul>
+    <div class="back-button">
+    <button onclick="goToPage('home.html')">Back</button>
+    </div>
+  </div>
+  <div class="content">
+    <h1>User Profile</h1>
+    <div class="profile-form">
+      
+      <!-- <div class="profile-photo">
+        <img src="set.png" alt="Profile Photo">
+        <input type="file" id="profile-photo-input" accept="image/*" style="display: none;">
+      </div> -->
+      <form method="post" action="edit_profile">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter Name">
+          </div>
+          <div class="form-group">
+            <label for="district">District:</label>
+            <input type="text" id="district" name="district" placeholder="Enter District">
+          </div>
+          <div class="form-group">
+            <label for="asha-id">Asha ID:</label>
+            <input type="number" id="asha-id" name="asha_id" placeholder="Enter Asha ID">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="health-center">Health Center:</label>
+            <input type="text" id="health-center" name="health_center" placeholder="Enter Health Center">
+          </div>
+          <div class="form-group">
+            <label for="mobile-no">Mobile No:</label>
+            <input type="number" id="mobile-no" name="mobile_no" placeholder="Enter Mobile No">
+          </div>
+          <div class="form-group">
+            <label for="issue-date">Issue Date:</label>
+            <input type="date" id="issue-date" name="issue_date" placeholder="Enter Issue Date">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="date" id="expiry-date" name="expiry_date" placeholder="Enter Expiry Date">
+          </div>
+          <div class="form-group">
+            <label for="dob">DOB:</label>
+            <input type="date" id="dob" name="dob" placeholder="Enter Date of Birth">
+          </div>
+          <div class="form-group">
+            <label for="blood-group">Blood Group:</label>
+            <input type="text" id="blood-group" name="blood_group" placeholder="Enter Blood Group">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="aadhar-no">Aadhar No:</label>
+            <input type="number" id="aadhar-no" name="aadhar_no" placeholder="Enter Aadhar No">
+          </div>
+          <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" placeholder="Enter Address">
+          </div>
+          <div class="form-group">
+            <label for="office-address">Office Address:</label>
+            <input type="text" id="office-address" name="office_address" placeholder="Enter Office Address">
+          </div>
+        </div>
+        <div class="buttons">
+          <button id="edit-btn">Edit</button>
+          <button id="save-btn"  type="submit">Save Changes</button>
+        </div>
+      </form>
     </div>
 
-    <script>
-        const form = document.querySelector("form"),
-        nextBtn = form.querySelector(".nextBtn"),
-        backBtn = form.querySelector(".backBtn"),
-        allInput = form.querySelectorAll(".first input");
-        nextBtn.addEventListener("click", ()=> {
-            allInput.forEach(input => {
-                if(input.value != ""){
-                    form.classList.add('secActive');
-                }else{
-                    form.classList.remove('secActive');
-                }
-            })
-        })
-        backBtn.addEventListener("click", () => form.classList.remove('secActive'));
-    </script>
+  </div>
+  <!-- <script src="setting.js"></script> -->
 </body>
 </html>
