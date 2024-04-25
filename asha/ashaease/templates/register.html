@@ -252,7 +252,17 @@
 </head>
 
 <body>
-   
+   <div>
+          <!--Alert area-->
+          <div class="form-group row">
+            {% for message in messages %} 
+            <div class="alert alert-good" role="alert">
+              {{message}}
+            </div>
+            {% endfor %}
+          </div>
+          <!--Alert area ends-->
+   </div>
 
     <div class="container" id="container">
         <div class="form-container sign-up">
@@ -267,16 +277,13 @@
             </form>
         </div>
         <div class="form-container sign-in">
-            <form method="post">
-                <h1>Sign In</h1>
-               
-                
-                <input type="email" placeholder="Email" name="email">
+            <form action="signin" method="POST">
+                {% csrf_token%}
+                <h1>Sign In</h1>              
+                <input type="username" name="username" placeholder="Username">
                 <input type="password" placeholder="Password" name="password">
                 <a href="#">Forget Your Password?</a>
-                <button href="home.html">Sign In
-                    
-                </button>
+                <button type="submit">Sign In</button>
             </form >
         </div>
         <div class="toggle-container">

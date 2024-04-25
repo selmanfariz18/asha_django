@@ -1,6 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 
 
@@ -33,3 +36,26 @@ def register(request):
             messages.info(request, 'Both passwords are not matching')
             return redirect('register')
     return render(request, 'register.html')
+
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password'] 
+
+        user = authenticate(request=request, username=username, password=password)
+        if user is not None:
+            login(request=request, user=user)          
+            if user.is_superuser:
+                messages.error(request, "Password/email incorrect")
+                return render(request, 'register.html')
+            else:
+                return HttpResponseRedirect(reverse("home"))
+        else:
+            messages.error(request, "Password/email incorrect")
+            return render(request, 'register.html')   
+        
+def edit_profile(request):
+    return render(request, 'edit_profile.html')
+
+def home(request):
+    return render(request, 'home.html')
