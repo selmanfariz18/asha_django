@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.hashers import make_password, check_password
 
 from ashaease.models import ProfileDetail
 
@@ -116,3 +118,31 @@ def logout_user(request):
 
 def home(request):
     return render(request, 'home.html')
+
+def change_password(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_new_password = request.POST.get('confirm_new_password')
+
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in correctly!', status=401)
+
+        if not check_password(old_password, request.user.password):
+            messages.error(request, 'Your old password was entered incorrectly!')
+            return render(request, 'change_password.html')
+
+        if new_password != confirm_new_password:
+            messages.error(request, 'The two password fields didnt match.')
+            return render(request, 'change_password.html')
+
+        # If all is good, set new password and save the user model
+        request.user.password = make_password(new_password)
+        request.user.save()
+
+        # Updating session with the new password hash
+        update_session_auth_hash(request, request.user)
+        messages.success(request, 'Your password has been changed successfully!')
+        return redirect('home')  
+
+    return render(request, 'change_password.html')

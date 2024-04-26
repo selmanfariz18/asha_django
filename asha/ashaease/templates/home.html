@@ -485,9 +485,9 @@
     
     <div id="mySidenav" class="sidenav">
       <hr class="separator">
-      <a href="/edit_profile">View Profile</a>
+      <a href="edit_profile">View Profile</a>
       <hr class="separator">
-      <a href="pass.html">Change Password</a>
+      <a href="change_password">Change Password</a>
       <hr class="separator">
       <a href="logout_user">Logout</a>
       <hr class="separator">
@@ -557,13 +557,20 @@
       
       
 
-      <!--=============== MAIN JS ===============-->
-      <script src="home.js"></script>
-      <script src="profile.js"></script>
   
 
 
-
+      <div>
+        <!--Alert area-->
+        <div class="form-group row">
+          {% for message in messages %} 
+          <div class="alert alert-good" role="alert">
+            {{message}}
+          </div>
+          {% endfor %}
+        </div>
+        <!--Alert area ends-->
+      </div>
   <div class="container">
     <div class="box mySwiper">
       <div class="content swiper-wrapper">
