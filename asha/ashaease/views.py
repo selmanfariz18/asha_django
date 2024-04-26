@@ -188,3 +188,11 @@ def edit_event(request, event_id):
     else:
         form = EventForm(instance=event)
     return render(request, 'edit_event.html', {'form': form})
+
+from datetime import date
+
+def get_events_by_day(request, year, month, day):
+    event_date = date(year, month, day)
+    events = Event.objects.filter(event_date=event_date)
+    events_data = [{"title": event.title, "date": event.event_date, "start_time": event.start_time, "end_time": event.end_time} for event in events]
+    return JsonResponse(events_data, safe=False)
