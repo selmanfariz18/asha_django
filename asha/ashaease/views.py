@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -6,8 +6,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.decorators import login_required
+from .forms import EventForm
+from django.http import JsonResponse
 
-from ashaease.models import ProfileDetail
+import datetime
+
+from ashaease.models import ProfileDetail, Event
 
 
 
@@ -146,3 +151,40 @@ def change_password(request):
         return redirect('home')  
 
     return render(request, 'change_password.html')
+
+@login_required
+def calendar(request):
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
+            return redirect('calendar')
+    else:
+        form = EventForm()
+
+    today = datetime.date.today()
+    events = Event.objects.filter(user=request.user, event_date__year=today.year, event_date__month=today.month)
+    return render(request, 'calendar.html', {'form': form, 'events': events})
+
+@login_required
+def get_events(request, year, month):
+    events = list(Event.objects.filter(
+        user=request.user,
+        event_date__year=year,
+        event_date__month=month
+    ).values())
+    return JsonResponse(events, safe=False)
+
+@login_required
+def edit_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id, user=request.user)
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect('calendar')
+    else:
+        form = EventForm(instance=event)
+    return render(request, 'edit_event.html', {'form': form})
