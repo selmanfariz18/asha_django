@@ -13,4 +13,5 @@ urlpatterns = [
     path('events/<int:year>/<int:month>/<int:day>/', views.get_events_by_day, name='get_events_by_day'),  
     path('events/<int:year>/<int:month>/', views.get_events, name='get_events'),  
     path('edit/<int:event_id>/', views.edit_event, name='edit_event'),
+    path('notification', views.notification, name="notification"),    
 ]

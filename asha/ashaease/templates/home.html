@@ -10,6 +10,8 @@
   <!-- box icons -->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <!-- custom css -->
+  {% load static %}
+
 <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
     * {
@@ -577,7 +579,7 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\house.png" alt="home">
+              <img src="{% static 'images/house.png' %}" alt="home">
             </div>
             <div class="name-profession">
               <span class="name">Household</span>
@@ -593,7 +595,7 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\report.png" alt="">
+              <img src="{% static 'images/report.png' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Report</span>
@@ -608,14 +610,14 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\notification.jpg" alt="">
+              <img src="{% static 'images/notification.jpg' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Notiifcation</span>
              
             </div>
             
-            <a href="destination.html">
+            <a href="/notification">
               <button style="--clr:#f42004" >></button>
               </a>
           </div>
@@ -625,7 +627,7 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\maternity.jpg" alt="">
+              <img src="{% static 'images/maternity.jpg' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Maternity</span>
@@ -640,7 +642,7 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\babyfoot.png" alt="">
+              <img src="{% static 'images/babyfoot.png' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Children</span>

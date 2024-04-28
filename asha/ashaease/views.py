@@ -196,3 +196,29 @@ def get_events_by_day(request, year, month, day):
     events = Event.objects.filter(event_date=event_date)
     events_data = [{"title": event.title, "date": event.event_date, "start_time": event.start_time, "end_time": event.end_time} for event in events]
     return JsonResponse(events_data, safe=False)
+
+import vonage
+
+def notification(request):
+    if request.method == 'POST':
+        # mobile = request.POST['mobile']
+        message=request.POST['message']
+        client = vonage.Client(key="387d2351", secret="PeVmQ28XjdEwAbzQ")
+        sms = vonage.Sms(client)
+
+        responseData = sms.send_message(
+            {
+                "from": "Vonage APIs",
+                "to": "919074516544",
+                "text": str(message),
+            }
+        )
+
+        if responseData["messages"][0]["status"] == "0":
+            print("Message sent successfully.")
+        else:
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+        messages.success(request, 'Notification send successfully!')
+        return redirect('home')
+
+    return render(request, 'notification.html')
