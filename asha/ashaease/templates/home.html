@@ -10,6 +10,8 @@
   <!-- box icons -->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <!-- custom css -->
+  {% load static %}
+
 <style>
       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
     * {
@@ -485,9 +487,9 @@
     
     <div id="mySidenav" class="sidenav">
       <hr class="separator">
-      <a href="/edit_profile">View Profile</a>
+      <a href="edit_profile">View Profile</a>
       <hr class="separator">
-      <a href="pass.html">Change Password</a>
+      <a href="change_password">Change Password</a>
       <hr class="separator">
       <a href="logout_user">Logout</a>
       <hr class="separator">
@@ -523,7 +525,7 @@
                       </li>
 
                       <li class="nav__item">
-                          <a href="calender.html" class="nav__link">
+                          <a href="calendar" class="nav__link">
                               <!-- <i class='bx bx-book-alt nav__icon'></i> -->
                               <span class="nav__name">calender</span>
                               <svg xmlns="http://www.w3.org/2000/svg" width="1.2rem" height="1.2rem" viewBox="0 0 24 24">
@@ -557,20 +559,27 @@
       
       
 
-      <!--=============== MAIN JS ===============-->
-      <script src="home.js"></script>
-      <script src="profile.js"></script>
   
 
 
-
+      <div>
+        <!--Alert area-->
+        <div class="form-group row">
+          {% for message in messages %} 
+          <div class="alert alert-good" role="alert">
+            {{message}}
+          </div>
+          {% endfor %}
+        </div>
+        <!--Alert area ends-->
+      </div>
   <div class="container">
     <div class="box mySwiper">
       <div class="content swiper-wrapper">
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\house.png" alt="home">
+              <img src="{% static 'images/house.png' %}" alt="home">
             </div>
             <div class="name-profession">
               <span class="name">Household</span>
@@ -586,7 +595,7 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\report.png" alt="">
+              <img src="{% static 'images/report.png' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Report</span>
@@ -601,14 +610,14 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\notification.jpg" alt="">
+              <img src="{% static 'images/notification.jpg' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Notiifcation</span>
              
             </div>
             
-            <a href="destination.html">
+            <a href="/notification">
               <button style="--clr:#f42004" >></button>
               </a>
           </div>
@@ -618,7 +627,7 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\maternity.jpg" alt="">
+              <img src="{% static 'images/maternity.jpg' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Maternity</span>
@@ -633,7 +642,7 @@
         <div class="card swiper-slide">
           <div class="card-content">
             <div class="image">
-              <img src="img\babyfoot.png" alt="">
+              <img src="{% static 'images/babyfoot.png' %}" alt="">
             </div>
             <div class="name-profession">
               <span class="name">Children</span>

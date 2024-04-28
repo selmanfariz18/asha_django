@@ -11,6 +11,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
     <title>Web Design Mastery | Responsive Portfolio</title>
+    {% load static %}
     <style>
                 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
@@ -268,8 +269,7 @@
           </div>
         </div>
         <div class="image">
-          <img src="red herat.jpg" alt="asha worker" width="300" height="350" >
-          
+          <img src="{% static 'images/red herat.jpg' %}" alt="asha worker" width="300" height="350" >         
 
         </div>
       </div>

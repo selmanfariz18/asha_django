@@ -1,11 +1,18 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.hashers import make_password, check_password
+from django.contrib.auth.decorators import login_required
+from .forms import EventForm
+from django.http import JsonResponse
 
-from ashaease.models import ProfileDetail
+import datetime
+
+from ashaease.models import ProfileDetail, Event
 
 
 
@@ -116,3 +123,102 @@ def logout_user(request):
 
 def home(request):
     return render(request, 'home.html')
+
+def change_password(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_new_password = request.POST.get('confirm_new_password')
+
+        if not request.user.is_authenticated:
+            return HttpResponse('Not logged in correctly!', status=401)
+
+        if not check_password(old_password, request.user.password):
+            messages.error(request, 'Your old password was entered incorrectly!')
+            return render(request, 'change_password.html')
+
+        if new_password != confirm_new_password:
+            messages.error(request, 'The two password fields didnt match.')
+            return render(request, 'change_password.html')
+
+        # If all is good, set new password and save the user model
+        request.user.password = make_password(new_password)
+        request.user.save()
+
+        # Updating session with the new password hash
+        update_session_auth_hash(request, request.user)
+        messages.success(request, 'Your password has been changed successfully!')
+        return redirect('home')  
+
+    return render(request, 'change_password.html')
+
+@login_required
+def calendar(request):
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.user = request.user
+            event.save()
+            return redirect('calendar')
+    else:
+        form = EventForm()
+
+    today = datetime.date.today()
+    events = Event.objects.filter(user=request.user, event_date__year=today.year, event_date__month=today.month)
+    return render(request, 'calendar.html', {'form': form, 'events': events})
+
+@login_required
+def get_events(request, year, month):
+    events = list(Event.objects.filter(
+        user=request.user,
+        event_date__year=year,
+        event_date__month=month
+    ).values())
+    return JsonResponse(events, safe=False)
+
+@login_required
+def edit_event(request, event_id):
+    event = get_object_or_404(Event, id=event_id, user=request.user)
+    if request.method == 'POST':
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect('calendar')
+    else:
+        form = EventForm(instance=event)
+    return render(request, 'edit_event.html', {'form': form})
+
+from datetime import date
+
+def get_events_by_day(request, year, month, day):
+    event_date = date(year, month, day)
+    events = Event.objects.filter(event_date=event_date)
+    events_data = [{"title": event.title, "date": event.event_date, "start_time": event.start_time, "end_time": event.end_time} for event in events]
+    return JsonResponse(events_data, safe=False)
+
+import vonage
+
+def notification(request):
+    if request.method == 'POST':
+        # mobile = request.POST['mobile']
+        message=request.POST['message']
+        client = vonage.Client(key="387d2351", secret="PeVmQ28XjdEwAbzQ")
+        sms = vonage.Sms(client)
+
+        responseData = sms.send_message(
+            {
+                "from": "Vonage APIs",
+                "to": "919074516544",
+                "text": str(message),
+            }
+        )
+
+        if responseData["messages"][0]["status"] == "0":
+            print("Message sent successfully.")
+        else:
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+        messages.success(request, 'Notification send successfully!')
+        return redirect('home')
+
+    return render(request, 'notification.html')
