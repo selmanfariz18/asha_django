@@ -62,8 +62,6 @@
     border-radius: 5px;
     cursor: pointer;
     display: block;
-    margin: 0 auto;
-    margin-top: 20px;
   }
 
   .add-event-btn:hover {
@@ -101,7 +99,10 @@
     </div>
     {% endfor %}
   </div>
-  <button class="add-event-btn" id="add-event-btn-1">+</button>
+  <div style="display: flex; justify-content: space-around;">
+    <a class="add-event-btn" style="text-decoration: none;" href="/home">Back</a>
+    <button class="add-event-btn" id="add-event-btn-1">+</button>
+  </div>
   <form method="post" class="hidden">
     {% csrf_token %}
     {{ form.as_p }}

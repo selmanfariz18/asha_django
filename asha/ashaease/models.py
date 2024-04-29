@@ -27,3 +27,27 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.title} on {self.event_date} from {self.start_time} to {self.end_time}"
+    
+
+class Report(models.Model):
+    name = models.CharField(max_length=255)
+    date = models.DateField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reports")
+
+    def __str__(self):
+        return self.name
+
+class Heading(models.Model):
+    report = models.ForeignKey(Report, related_name='headings', on_delete=models.CASCADE)
+    heading = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.heading
+    
+class Questions(models.Model):
+    heading = models.ForeignKey(Heading, related_name='questions', on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=1000)
+    count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.question_text
