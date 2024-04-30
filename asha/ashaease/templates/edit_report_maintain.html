@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Page</title>
+    <style>
+        /* Overall UI styling */
+        body {
+            background-color: #f8f8f8; /* Light grey */
+            color: #000000; /* Dark grey */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header styling */
+        h2 {
+            color: #333; /* Dark grey */
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #e74c3c; /* Red */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #c0392b; /* Darker red on hover */
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2; /* Light grey */
+        }
+        .editable-input {
+            width: 100%;
+            border: none;
+            background-color: transparent;
+        }
+        .placeholder-text {
+            color: #888;
+        }
+
+        .heading-row{
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <h2>Report</h2>
+    <div id="reportForm">
+        
+        <table id="report-table">
+            <thead>
+                <tr>
+                    <th colspan="4">Date:  {{ reports.date|date:"Y-m-d" }} Report name:{{reports.name}}</th>
+                </tr>
+                <tr>
+                    <th>Sl. No.</th>
+                    <th>Questions</th>
+                    <th>Count</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                {% for head in heading %}
+                <tr class="heading-row">
+                    <td>1</td>
+                    <td class="editable-input placeholder-text">
+                        {{head.heading}}
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% for q in questions %}
+                {% if q.heading == head %}
+                <tr class="question-row">
+
+                    <td>></td>
+                    <td contenteditable="true" class="editable-input placeholder-text">
+                        {{q.question_text}}
+                    </td>
+                    <td>{{q.count}}</td>
+                    <td></td>
+
+                </tr>
+                {% endif %}
+                {% endfor %}
+                <tr class="question-row">
+                    <form method="POST" action="{% url 'report_edit_maintain' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="report_date" value="{{ reports.date|date:'Y-m-d' }}">
+                        <input type="hidden" name="report_name" value="{{reports.name}}">
+                        <input type="hidden" name="heading" value="{{head.heading}}">
+                        <td>></td>
+                        <td contenteditable="true" class="editable-input placeholder-text">
+                            <input type="text" name="question" placeholder="Enter Question">
+                        </td>
+                        <td><input type="number" name="count" required></td>
+                        <td><button type="submit">Save</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+                <form method="POST" action="{% url 'report_edit_maintain' %}">
+                    {% csrf_token %}
+                <tr class="heading-row">
+                        <input type="hidden" name="report_date" value="{{ reports.date|date:'Y-m-d' }}">
+                        <input type="hidden" name="report_name" value="{{reports.name}}">
+                    <td>1</td>
+                    <td class="editable-input placeholder-text">
+                        <input type="text" name="heading" placeholder="Enter heading here">
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="question-row">
+                    <td>></td>
+                    <td contenteditable="true" class="editable-input placeholder-text">
+                        <input type="text" name="question" placeholder="Enter Question">
+                    </td>
+                    <td><input type="number" name="count"></td>
+                    <td><button type="submit">Save</button></td>
+                </tr>
+                </form>
+            </tbody>
+        </table>
+        <!-- <button type="button" onclick="addHeading()">Add Heading</button>
+        <button type="button" onclick="addQuestion()">Add Question</button> -->
+        <!-- <button type="submit">Save Data</button> -->
+        </div>
+    <button onclick="downloadReport()">Download Report</button>
+    
+ 
+    <script>
+    
+    // function addHeading() {
+    //     var table = document.getElementById("report-table").getElementsByTagName('tbody')[0];
+    //     var headingCount = table.getElementsByClassName('heading-row').length + 1;
+    //     var newRow = table.insertRow(table.rows.length);
+    //     newRow.classList.add('heading-row');
+    //     var cell1 = newRow.insertCell(0);
+    //     var cell2 = newRow.insertCell(1);
+    //     var cell3 = newRow.insertCell(2);
+    //     cell1.innerHTML = headingCount;
+    //     cell2.innerHTML = '';
+    //     cell2.setAttribute('contenteditable', 'true');
+    //     cell2.classList.add('editable-input', 'placeholder-text');
+    //     cell2.setAttribute('onclick', 'clearPlaceholder(this)');
+    //     cell2.innerHTML = 'Enter heading here';
+    //     cell3.innerHTML = '';
+    // }
+
+    // function addQuestion() {
+    //     var table = document.getElementById("report-table").getElementsByTagName('tbody')[0];
+    //     var questionCount = table.getElementsByClassName('question-row').length + 1;
+    //     var newRow = table.insertRow(table.rows.length);
+    //     newRow.classList.add('question-row');
+    //     var cell1 = newRow.insertCell(0);
+    //     var cell2 = newRow.insertCell(1);
+    //     var cell3 = newRow.insertCell(2);
+    //     cell1.innerHTML ='>';
+    //     cell2.innerHTML = '';
+    //     cell2.setAttribute('contenteditable', 'true');
+    //     cell2.classList.add('editable-input', 'placeholder-text');
+    //     cell2.setAttribute('onclick', 'clearPlaceholder(this)');
+    //     cell2.innerHTML = 'Enter question here';
+    //     cell3.innerHTML = '<input type="number">';
+    // }
+
+    // // Function to clear placeholder text on click
+    // function clearPlaceholder(element) {
+    //     if (element.classList.contains('placeholder-text')) {
+    //         element.innerHTML = '';
+    //         element.classList.remove('placeholder-text');
+    //     }
+    // }
+
+
+
+    // document.querySelectorAll('.question-row').forEach(function(row) {
+    //     const heading = row.previousElementSibling.querySelector('.editable-input').textContent; // Gets heading from the previous heading row
+    //     const question = row.querySelector('.editable-input').textContent;
+    //     const count = row.querySelector('input[type="number"]').value;
+    //     data.questions.push({heading: heading, question: question, count: count});
+    // });
+
+
+
+// Function to download the report in PDF format
+function downloadReport() {
+    var data = JSON.parse(localStorage.getItem('reportData'));
+    if (data) {
+        var doc = new jsPDF();
+        doc.autoTable({
+            head: [['Sl. No.', 'Questions', 'Count']],
+            body: data.map(row => [row.slNo, row.question, row.numOfWork]),
+        });
+        doc.save('report.pdf');
+    } else {
+        alert('No data available to generate the report!');
+    }
+}
+    </script>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 from django.urls import path
 from ashaease import views
 
+
 urlpatterns = [
     path('',views.base, name="base"),
     path('register', views.register, name="register"),
@@ -13,5 +14,8 @@ urlpatterns = [
     path('events/<int:year>/<int:month>/<int:day>/', views.get_events_by_day, name='get_events_by_day'),  
     path('events/<int:year>/<int:month>/', views.get_events, name='get_events'),  
     path('edit/<int:event_id>/', views.edit_event, name='edit_event'),
-    path('notification', views.notification, name="notification"),    
+    path('notification', views.notification, name="notification"),
+    path('report/', views.report, name='report'),
+    path('report_edit', views.report_edit, name='report_edit'),
+    path('report_edit_maintain', views.report_edit_maintain, name='report_edit_maintain'),
 ]

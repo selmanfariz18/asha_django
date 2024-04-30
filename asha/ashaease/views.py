@@ -9,8 +9,13 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from .forms import EventForm
 from django.http import JsonResponse
+from .models import Report,Heading, Questions
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.utils.dateparse import parse_date
 
-import datetime
+
+from datetime import datetime
 
 from ashaease.models import ProfileDetail, Event
 
@@ -222,3 +227,122 @@ def notification(request):
         return redirect('home')
 
     return render(request, 'notification.html')
+
+
+def report(request):
+
+    if request.method == "POST":
+        # Get data from form
+        report_name = request.POST.get('report_name')
+        report_date = request.POST.get('report_date')
+
+    return render(request, 'report.html')
+
+def report_edit(request):
+
+    if request.method == "POST":
+        # Get data from form
+        report_name = request.POST.get('report_name')
+        report_date = request.POST.get('report_date')
+        heading = request.POST.get('heading')
+        question = request.POST.get('question')
+        count = request.POST.get('count')
+
+        # Parse the date from string to date object
+        report_date = parse_date(report_date)
+
+        # Assuming the user is logged in and is available as request.user
+        user = request.user
+
+        # Retrieve the existing report or create a new one if it doesn't exist
+        report, report_created = Report.objects.get_or_create(
+            name=report_name, 
+            date=report_date, 
+            defaults={'created_by': user}
+        )
+
+        # Retrieve or create the heading under the report
+        heading, heading_created = Heading.objects.get_or_create(
+            report=report,
+            heading=heading
+        )
+
+        # Create a new question under the heading
+        question = Questions.objects.create(
+            heading=heading,
+            question_text=question,
+            count=count
+        )
+
+        report = Report.objects.get(created_by=request.user, id=report.id) 
+        heading = Heading.objects.filter(report=report)
+        questions = Questions.objects.all()
+
+
+
+        context = {
+            'reports' : report,
+            'heading' : heading,
+            'questions' : questions
+        }
+        # print()
+        return render(request, 'edit_report_maintain.html', context)
+
+
+    return render(request, 'edit_report.html')
+
+
+def report_edit_maintain(request):
+    if request.method == "POST":
+        # Get data from form
+        report_name = request.POST.get('report_name')
+        report_date = request.POST.get('report_date')
+        heading = request.POST.get('heading')
+        question = request.POST.get('question')
+        count = request.POST.get('count')
+
+        # Parse the date from string to date object
+        report_date = parse_date(report_date)
+
+        # Assuming the user is logged in and is available as request.user
+        user = request.user
+
+        # Retrieve the existing report or create a new one if it doesn't exist
+        report, report_created = Report.objects.get_or_create(
+            name=report_name, 
+            date=report_date, 
+            defaults={'created_by': user}
+        )
+
+        # Retrieve or create the heading under the report
+        heading, heading_created = Heading.objects.get_or_create(
+            report=report,
+            heading=heading
+        )
+
+        # Create a new question under the heading
+        question = Questions.objects.create(
+            heading=heading,
+            question_text=question,
+            count=count
+        )
+
+    
+        reports = Report.objects.get(created_by=request.user, id=report.id) 
+        heading = Heading.objects.filter(report=reports)
+        questions = Questions.objects.all()
+
+
+        context = {
+            'reports' : reports,
+            'heading' : heading,
+            'questions' : questions
+        }
+        return render(request, 'edit_report_maintain.html', context)
+
+
+    return render(request, 'edit_report_maintain.html')
+
+
+def report(request):
+    return render(request, 'report.html')
