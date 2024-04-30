@@ -102,6 +102,8 @@
                     <td></td>
 
                 </tr>
+                {% endif %}
+                {% endfor %}
                 <tr class="question-row">
                     <form method="POST" action="{% url 'report_edit_maintain' %}">
                         {% csrf_token %}
@@ -112,12 +114,10 @@
                         <td contenteditable="true" class="editable-input placeholder-text">
                             <input type="text" name="question" placeholder="Enter Question">
                         </td>
-                        <td><input type="number" name="count"></td>
+                        <td><input type="number" name="count" required></td>
                         <td><button type="submit">Save</button></td>
                     </form>
                 </tr>
-                {% endif %}
-                {% endfor %}
                 {% endfor %}
                 <form method="POST" action="{% url 'report_edit_maintain' %}">
                     {% csrf_token %}
