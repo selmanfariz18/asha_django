@@ -280,14 +280,21 @@ def report_edit(request):
 
 
 
-        context = {
-            'reports' : report,
-            'heading' : heading,
-            'questions' : questions
+        # context = {
+        #     'reports' : report,
+        #     'heading' : heading,
+        #     'questions' : questions
+        # }
+        # # print()
+        # return render(request, 'edit_report_maintain.html', context)
+        # Process form data and save to session
+        request.session['report_data'] = {
+            'report_id': report.id,
+            # 'heading_id': heading.id
         }
-        # print()
-        return render(request, 'edit_report_maintain.html', context)
 
+        # Redirect to the maintain view
+        return redirect('report_edit_maintain')
 
     return render(request, 'edit_report.html')
 
@@ -340,8 +347,29 @@ def report_edit_maintain(request):
         }
         return render(request, 'edit_report_maintain.html', context)
 
+    data = request.session.pop('report_data', None)
+    if data:
+            # Extract data
+        report_id = data.get('report_id')
+        # heading_id = data.get('heading_id')
 
-    return render(request, 'edit_report_maintain.html')
+    
+    reports = Report.objects.get(created_by=request.user, id=report_id)
+    heading = Heading.objects.filter(report=reports)
+    questions = Questions.objects.all()
+
+    request.session['report_data'] = {
+        'report_id': report_id,
+            # 'heading_id': heading.id
+    }
+
+    context ={
+        'reports' : reports,
+        'heading' : heading,
+        'questions' : questions,
+    }
+
+    return render(request, 'edit_report_maintain.html', context)
 
 
 def report(request):
