@@ -175,57 +175,57 @@
         <div class="form-row">
           <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" placeholder="Enter Name">
+            <input type="text" id="name" name="name" placeholder="{% if user.first_name %}{{ user.first_name }}{% else %}Enter Name{% endif %}">
           </div>
           <div class="form-group">
             <label for="district">District:</label>
-            <input type="text" id="district" name="district" placeholder="Enter District">
+            <input type="text" id="district" name="district" placeholder="{% if profile.district %}{{ profile.district }}{% else %}Enter District{% endif %}">
           </div>
           <div class="form-group">
             <label for="asha-id">Asha ID:</label>
-            <input type="number" id="asha-id" name="asha_id" placeholder="Enter Asha ID">
+            <input type="number" id="asha-id" name="asha_id" placeholder="{% if profile.asha_id %}{{ profile.asha_id }}{% else %}Enter Asha ID{% endif %}">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="health-center">Health Center:</label>
-            <input type="text" id="health-center" name="health_center" placeholder="Enter Health Center">
+            <input type="text" id="health-center" name="health_center" placeholder="{% if profile.health_center %}{{ profile.health_center }}{% else %}Enter Health Center{% endif %}">
           </div>
           <div class="form-group">
             <label for="mobile-no">Mobile No:</label>
-            <input type="number" id="mobile-no" name="mobile_no" placeholder="Enter Mobile No">
+            <input type="number" id="mobile-no" name="mobile_no" placeholder="{% if profile.mobile_no %}{{ profile.mobile_no }}{% else %}Enter Mobile No{% endif %}">
           </div>
           <div class="form-group">
             <label for="issue-date">Issue Date:</label>
-            <input type="date" id="issue-date" name="issue_date" placeholder="Enter Issue Date">
+            <input type="date" id="issue-date" name="issue_date" placeholder="{% if profile.issue_date %}{{ profile.issue_date }}{% else %}Enter Issue Date{% endif %}">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="expiry-date">Expiry Date:</label>
-            <input type="date" id="expiry-date" name="expiry_date" placeholder="Enter Expiry Date">
+            <input type="date" id="expiry-date" name="expiry_date" placeholder="{% if profile.expiry_date %}{{ profile.expiry_date }}{% else %}Enter Expiry Date{% endif %}">
           </div>
           <div class="form-group">
             <label for="dob">DOB:</label>
-            <input type="date" id="dob" name="dob" placeholder="Enter Date of Birth">
+            <input type="date" id="dob" name="dob" placeholder="{% if profile.health_center %}{{ profile.health_center }}{% else %}Enter Date of Birth{% endif %}">
           </div>
           <div class="form-group">
             <label for="blood-group">Blood Group:</label>
-            <input type="text" id="blood-group" name="blood_group" placeholder="Enter Blood Group">
+            <input type="text" id="blood-group" name="blood_group" placeholder="{% if profile.health_center %}{{ profile.health_center }}{% else %}Enter Blood Group{% endif %}">
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="aadhar-no">Aadhar No:</label>
-            <input type="number" id="aadhar-no" name="aadhar_no" placeholder="Enter Aadhar No">
+            <input type="number" id="aadhar-no" name="aadhar_no" placeholder="{% if profile.health_center %}{{ profile.health_center }}{% else %}Enter Aadhar No{% endif %}">
           </div>
           <div class="form-group">
             <label for="address">Address:</label>
-            <input type="text" id="address" name="address" placeholder="Enter Address">
+            <input type="text" id="address" name="address" placeholder="{% if profile.health_center %}{{ profile.health_center }}{% else %}Enter Address{% endif %}">
           </div>
           <div class="form-group">
             <label for="office-address">Office Address:</label>
-            <input type="text" id="office-address" name="office_address" placeholder="Enter Office Address">
+            <input type="text" id="office-address" name="office_address" placeholder="{% if profile.health_center %}{{ profile.health_center }}{% else %}Enter Office Address{% endif %}">
           </div>
         </div>
         <div class="buttons">

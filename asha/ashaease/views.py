@@ -120,7 +120,14 @@ def edit_profile(request):
         # print(name, district, asha_id, health_center, mobile_no,issue_date, expiry_date,
         #       dob, blood_group, aadhar_no, address, office_address)
 
-    return render(request, 'edit_profile.html')
+    try:
+        profile = ProfileDetail.objects.get(user=request.user)
+    except ProfileDetail.DoesNotExist:
+        profile = ProfileDetail(user=request.user) 
+
+    
+
+    return render(request, 'edit_profile.html', {'profile' : profile, 'user': request.user})
 
 def logout_user(request):
     logout(request)
