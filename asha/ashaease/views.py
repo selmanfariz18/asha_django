@@ -231,12 +231,18 @@ def notification(request):
 
 def report(request):
 
-    if request.method == "POST":
-        # Get data from form
-        report_name = request.POST.get('report_name')
-        report_date = request.POST.get('report_date')
+    # if request.method == "POST":
+    #     # Get data from form
+    #     report_name = request.POST.get('report_name')
+    #     report_date = request.POST.get('report_date')
+    
+    reports = Report.objects.filter(created_by=request.user)
 
-    return render(request, 'report.html')
+    context = {
+        'reports' : reports,
+    }    
+
+    return render(request, 'report.html', context)
 
 def report_edit(request):
 
@@ -370,7 +376,3 @@ def report_edit_maintain(request):
     }
 
     return render(request, 'edit_report_maintain.html', context)
-
-
-def report(request):
-    return render(request, 'report.html')

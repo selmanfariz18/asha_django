@@ -64,7 +64,9 @@
     </style>
 </head>
 <body>
-
+    <div style="text-align: right;">
+        <a href="{% url 'report' %}"><button>Back</button></a>
+    </div>
     <h2>Report</h2>
     <form id="reportForm" method="POST" action="{% url 'report_edit' %}">
         {% csrf_token %}
