@@ -1,34 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report List</title>
+<style>
+  /* Add your CSS styles here */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  .search-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  #search-date {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    width: 200px;
+    box-sizing: border-box;
+  }
+
+  #search-btn {
+    padding: 8px 20px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #search-btn:hover {
+    background-color: #c82333;
+  }
+
+  .add-report-btn {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+
+  .add-report-btn:hover {
+    background-color: #c82333;
+  }
+
+  .report-list {
+    margin-top: 30px;
+  }
+
+  .report {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    position: relative;
+  }
+
+  .delete-btn, .edit-btn {
+    padding: 5px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+  }
+
+  .edit-btn {
+    right: 45px;
+  }
+
+  .delete-btn {
+    right: 5px;
+  }
+
+  .delete-btn:hover, .edit-btn:hover {
+    background-color: #c82333;
+  }
+
+  .back-btn {
+    padding: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .back-btn:hover {
+    background-color: #c82333;
+  }
+</style>
 </head>
 <body>
-    <div>
-        <a href="/report_edit"><button>Add report</button></a>
+<div class="container">
+  <h2>Report List</h2>
+  <form id="reportForm" method="POST" action="{% url 'report' %}">
+    {% csrf_token %}
+  <div class="search-container">
+    <input type="date" name="date" id="search-date">
+    <button id="search-btn" type="submit">Search</button>
+  </div>
+  </form>
+  <div class="report-list" id="report-list">
+    {% if reports %}
+    <!-- Report list will be displayed here -->
+    {% for i in reports %}
+    <div class="report">
+        <form id="reportForm" method="POST" action="{% url 'report_view' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{i.id}}">
+            <button class="edit-btn" type="submit">&#9998;</button>
+        </form>
+        <form id="reportForm" method="POST" action="{% url 'report_delete' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{i.id}}">
+            <button class="delete-btn" type="submit">&#128465;</button>
+        </form>
+        <strong>{{ i.name }}</strong> - Date: {{ i.date }}
     </div>
-    <div>
-        <a href="/home"><button>Back</button></a>
-    </div>
-    <div>
-        {% if reports %}
-        <h1>Reports</h1>
-            <div>
-                {% for i in reports %}
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    <ul>
-                        <li>Name: {{ i.name }}</li>
-                        <li>Date: {{ i.date }}</li>
-                    </ul>
-                    <input type="hidden" name="id" value="{{i.id}}">
-                    <td><button type="submit">Edit</button></td>
-                </form>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+  <a href="/report_edit"><button class="add-report-btn" id="add-report-btn">+</button></a>
+  <a href="/home"><button class="back-btn">⮌</button></a>
+</div>
+
+<script>
+  // Sample reports data
+
+</script>
 </body>
 </html>
