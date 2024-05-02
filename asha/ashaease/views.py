@@ -16,6 +16,7 @@ from django.utils.dateparse import parse_date
 
 
 from datetime import datetime
+import datetime
 
 from ashaease.models import ProfileDetail, Event
 
@@ -231,12 +232,25 @@ def notification(request):
 
 def report(request):
 
-    # if request.method == "POST":
-    #     # Get data from form
-    #     report_name = request.POST.get('report_name')
-    #     report_date = request.POST.get('report_date')
-    
-    reports = Report.objects.filter(created_by=request.user)
+    if request.method == "POST":
+        # Get data from form
+        # report_name = request.POST.get('report_name')
+        date = request.POST.get('date')
+        request.session['report_date'] = {
+            'date': date,
+            # 'heading_id': heading.id
+        }
+
+        return redirect('report')
+
+    try:
+        date = request.session.pop('report_date')
+        if date:
+            # Extract data
+            date = date.get('date')
+        reports = Report.objects.filter(created_by=request.user, date= date)
+    except:
+        reports = Report.objects.filter(created_by=request.user)
 
     context = {
         'reports' : reports,
