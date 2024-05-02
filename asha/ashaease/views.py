@@ -390,3 +390,35 @@ def report_edit_maintain(request):
     }
 
     return render(request, 'edit_report_maintain.html', context)
+
+def report_view(request):
+    if request.method == "POST":
+        # Get data from form
+        id = request.POST.get('id')
+        reports = Report.objects.get(created_by=request.user, id=id)
+        heading = Heading.objects.filter(report=reports)
+        questions = Questions.objects.all()
+
+        request.session['report_data'] = {
+            'report_id': id,
+                # 'heading_id': heading.id
+        }
+
+        context ={
+            'reports' : reports,
+            'heading' : heading,
+            'questions' : questions,
+        }
+
+        return render(request, 'edit_report_maintain.html', context)
+    
+
+def report_delete(request):
+    if request.method == "POST":
+        # Get data from form
+        id = request.POST.get('id')
+
+        report = get_object_or_404(Report, id=id)
+        report.delete()
+
+        return redirect('report')

@@ -140,8 +140,16 @@
     <!-- Report list will be displayed here -->
     {% for i in reports %}
     <div class="report">
-        <button class="edit-btn" onclick="editReport(1)">&#9998;</button>
-        <button class="delete-btn" onclick="confirmDelete(1)">&#128465;</button>
+        <form id="reportForm" method="POST" action="{% url 'report_view' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{i.id}}">
+            <button class="edit-btn" type="submit">&#9998;</button>
+        </form>
+        <form id="reportForm" method="POST" action="{% url 'report_delete' %}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{i.id}}">
+            <button class="delete-btn" type="submit">&#128465;</button>
+        </form>
         <strong>{{ i.name }}</strong> - Date: {{ i.date }}
     </div>
     {% endfor %}
