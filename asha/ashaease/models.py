@@ -51,3 +51,24 @@ class Questions(models.Model):
 
     def __str__(self):
         return self.question_text
+    
+
+class House(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="houses")
+    house_no = models.CharField(max_length=20)
+    house_address = models.TextField()
+    no_of_members = models.IntegerField(default=0)
+    added_no_of_members = models.IntegerField(default=0)
+    is_no_of_members_added = models.BooleanField(default=False)
+    child_onboard = models.BooleanField(default=False)
+    child_cound = models.IntegerField(default=0)
+    added_child_cound = models.IntegerField(default=0)
+    is_child_added = models.BooleanField(default=False)
+    pregnant_onboard = models.BooleanField(default=False)
+    pregnant_cound = models.IntegerField(default=0)
+    added_pregnant_cound = models.IntegerField(default=0)
+    is_pregnant_added = models.BooleanField(default=False)
+    patients_onboard = models.BooleanField(default=False)
+    patients_cound = models.IntegerField(default=0)
+    added_patients_cound = models.IntegerField(default=0)
+    is_patients_added = models.BooleanField(default=False)

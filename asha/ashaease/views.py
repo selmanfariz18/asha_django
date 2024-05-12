@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from .forms import EventForm
 from django.http import JsonResponse
-from .models import Report,Heading, Questions
+from .models import Report,Heading, Questions, House
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.dateparse import parse_date
@@ -431,7 +431,62 @@ def report_delete(request):
         return redirect('report')
     
 def house_hold(request):
-    return render(request, 'household.html')
+    if request.method == "POST":
+        house_no = request.POST.get('house_no')
+        house_address = request.POST.get('house_address')
+        no_of_members = request.POST.get('no_of_members')
+        pregnant_onboard = request.POST.get('pregnant_onboard')
+        if pregnant_onboard == 'True':
+            pregnant_onboard = True
+            pregnant_cound = request.POST.get('pregnant_cound')
+        else:
+            pregnant_onboard = False
+        patients_onboard = request.POST.get('patients_onboard')
+        if patients_onboard == 'True':
+            patients_onboard = True
+            patients_cound = request.POST.get('patients_cound')
+        else:
+            patients_onboard = False
+        child_onboard = request.POST.get('child_onboard')
+        if child_onboard == 'True':
+            child_onboard = True
+            child_cound = request.POST.get('child_cound')
+        else:
+            child_onboard = False
+
+        # print(pregnant_onboard, pregnant_cound, patients_onboard, child_onboard)
+
+        house = House(user=request.user)
+
+        house.house_no = house_no
+        house.house_address = house_address
+        house.no_of_members = no_of_members
+        house.pregnant_onboard = pregnant_onboard
+        if pregnant_onboard == True:
+            house.pregnant_cound = pregnant_cound
+        else:
+            house.pregnant_cound = 0
+        house.patients_onboard = patients_onboard
+        if patients_onboard == True:
+            house.patients_cound = patients_cound
+        else:
+            house.patients_cound = 0
+        house.child_onboard = child_onboard
+        if child_onboard == True:
+            house.child_cound = child_cound
+        else:
+            house.child_cound = 0
+        house.save()
+
+        return redirect('house_hold')
+
+    house = House.objects.filter(user=request.user)
+
+    context = {
+        'house' : house
+    }
+
+    return render(request, 'household.html', context)
 
 def children(request):
     return render(request, 'children.html')

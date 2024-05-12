@@ -260,54 +260,60 @@
     <div class="overlay" id="addHouseForm" style="display: none;"> <!-- Add House form -->
         <div style="width: 50%;" class="form">
             <span class="close" style="float: right;" onclick="toggleAddHouseForm()">&times;</span> <!-- Close button -->
-            <h2>Add House</h2>
-            <label for="houseNumber">HouseNumber:</label>
-            <input type="text" id="houseNumber" placeholder="House Number" required>
-            <label for="houseAddress">HouseAddress:</label>
-            <p><textarea rows="3" style="width: 580px;" id="houseAddress" placeholder="House Address" required></textarea></p>
-            
-            <div class="form-group">
-                <label for="membernumber">Number of Members:</label>
-                <select id="membernumber"  required>
-                    <option value="Select"></option>
-                    <!-- Other options here -->
-                </select>
-            </div>
-            
-            <h3>Members</h3>
-            <div id="membersContainer"></div> <!-- Container for member forms -->
-            <button onclick="addMemberInput()">Add Member</button> <!-- Add Member button -->
-            <div class="radio-button-container">
-                <div>
-                    <label for="pregnant">Is there a pregnant woman in the house?</label>
-                    <input type="radio" id="pregnantYes" name="pregnant" value="yes" onclick="showPregnantForm()">
-                    <label for="pregnantYes">Yes</label>
-                    <input type="radio" id="pregnantNo" name="pregnant" value="no" onclick="hidePregnantForm()">
-                    <label for="pregnantNo">No</label>
+            <form method="post" action="house_hold">
+                {% csrf_token %}
+                <h2>Add House</h2>
+                <label for="houseNumber">HouseNumber:</label>
+                <input type="text" id="houseNumber" placeholder="House Number" name="house_no" required>
+                <label for="houseAddress">HouseAddress:</label>
+                <p>
+                    <textarea rows="3" style="width: 580px;" id="houseAddress" placeholder="House Address" name="house_address" required></textarea>
+                </p>            
+                <div class="form-group">
+                    <label for="membernumber">Number of Members:</label>
+                    <input type="number" name="no_of_members" placeholder="">
+                </div>            
+                <!-- <h3>Members</h3>
+                <div id="membersContainer"></div> 
+                <button onclick="addMemberInput()">Add Member</button> Add Member button -->
+                <div class="radio-button-container">
+                    <div>
+                        <label for="pregnant">Is there a pregnant woman in the house?</label>
+                        <input type="radio" id="pregnantYes" name="pregnant_onboard" value="True" onclick="showPregnantForm()">
+                        <label for="pregnantYes">Yes</label>
+                        <input type="radio" id="pregnantNo" name="pregnant_onboard" value="False" onclick="hidePregnantForm()">
+                        <label for="pregnantNo">No</label>
+                    </div>
+                    <div id="pregnantForm" style="display: none;">
+                        <input type="number" name="pregnant_cound" placeholder="Input count here">
+                    </div>                
                 </div>
-                <div id="pregnantForm" style="display: none;">
-                    <button  >Got pregnantDetails</button> 
-                </div>
-                
-            </div>
-            <div class="radio-button-container">
-             <div>
-            <label for="patient">Is there any patients in the home?</label>
-            <input type="radio" id="patientYes" name="patient" value="yes" onclick="showpatientbutton()">
-            <label for="patientYes">Yes</label>
-            <input type="radio" id="patientNo" name="patient" value="no" onclick="hidepatientbutton()">
-            <label for="patientNo">No</label>
-        </div>
-            
-        <div id="patientbutton" style="display: none;">
-            <button>Got patient</button> 
-        </div>
-    </div>
-            
-            
-                
-            
-            <button onclick="saveHouse()">Save House</button> <!-- Save House button -->
+                <div class="radio-button-container">
+                    <div>
+                        <label for="patient">Is there any patients in the home?</label>
+                        <input type="radio" id="patientYes" name="patients_onboard" value="True" onclick="showpatientbutton()">
+                        <label for="patientYes">Yes</label>
+                        <input type="radio" id="patientNo" name="patients_onboard" value="False" onclick="hidepatientbutton()">
+                        <label for="patientNo">No</label>
+                    </div>            
+                    <div id="patientbutton" style="display: none;">
+                        <input type="number" name="patients_cound" placeholder="Input count here"> 
+                    </div>
+                </div>   
+                <div class="radio-button-container">
+                    <div>
+                        <label for="patient">Is there any children in the home?</label>
+                        <input type="radio" id="patientYes" name="child_onboard" value="True" onclick="showChildrenForm()">
+                        <label for="patientYes">Yes</label>
+                        <input type="radio" id="patientNo" name="child_onboard" value="False" onclick="hideChildrenForm()">
+                        <label for="patientNo">No</label>
+                    </div>            
+                    <div id="childrenForm" style="display: none;">
+                        <input type="number" name="child_cound" placeholder="Input count here"> 
+                    </div>
+                </div>   
+                <button type="submit">Save House</button> <!-- Save House button -->
+            </form>
         </div>
     </div>
 
@@ -316,9 +322,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">House Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
-                <div class="modal-body" id="houseDetailsContent"></div> <!-- Content for house details -->
+                {% if house %}
+                {% for i in house %}
+                <div class="modal-body" id="houseDetailsContent">
+                    <p><strong>House Number:</strong> {{ i.house_no }}</p>
+                    <p><strong>Address:</strong> {{ i.house_address }}</p>
+                    <p><strong>Is there Pregnant ladies:</strong>{% if i.pregnant_onboard == True %} yes {% else %} no {% endif %}</p>
+                    {% if i.pregnant_onboard == True %}<p><strong>Pregnant Woman Count:</strong>{{ i.pregnant_cound }}</p>{% endif %}
+                    <p><strong>Is there Children:</strong>{% if i.child_onboard == True %} yes {% else %} no {% endif %}</p>
+                    {% if i.child_onboard == True %}<p><strong>Children Count:</strong> {{ i.child_cound }}</p> {% endif %}
+                    <p><strong>Is there Patients:</strong>{% if i.patients_onboard == True %} yes {% else %} no {% endif %}</p>
+                    {% if i.patients_onboard == True %}<p><strong>Patient Count:</strong> {{ i.patients_cound }}</p>{% endif %}
+                </div> <!-- Content for house details -->
+                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -438,17 +457,7 @@ function showhabitform() {
             });
         }
 
-        function displayHouseDetails(house) {
-            var modalContent = document.getElementById("houseDetailsContent");
-            modalContent.innerHTML = `
-                <p><strong>House Number:</strong> ${house.houseNumber}</p>
-                <p><strong>Address:</strong> ${house.houseAddress}</p>
-                <p><strong>Pregnant:</strong> ${house.pregnant}</p>
-                <p><strong>Pregnant Woman Details:</strong> ${house.pregnantDetails ? JSON.stringify(house.pregnantDetails) : 'N/A'}</p>
-                <p><strong>Children:</strong> ${house.children}</p>
-                <p><strong>Children Details:</strong> ${house.childrenDetails ? JSON.stringify(house.childrenDetails) : 'N/A'}</p>
-            `;
-        }
+
         
 
 
@@ -467,65 +476,7 @@ function showhabitform() {
             }
         }
 
-        function addMemberInput() {
-    var membersContainer = document.getElementById("membersContainer");
-    var memberForm = document.createElement("div");
-    memberForm.classList.add("member-form");
-    memberForm.innerHTML = `
-    <label for="name">Full Name:</label>
-        <input type="text" placeholder="Enter Name">
-        <label for="genderSelect">Gender</label>
-        <select id="genderSelect" placeholder="SelectGender">
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-        </select>
-        <label for="dobInput">Date of Birth</label>
-        <input type="date" id="dobInput" placeholder="Enter Date of Birth">
-        <label for="dobInput">Age</label>
-        <div class="age">
-        <input type="number" id="ageInput" placeholder="Age">
-        <button id="gotChildrenButton" style="display: none;">Got Children</button> <!-- Hidden by default -->
-        </div>
-        <div id="pensionInput" style="display: none;"> <!-- Hidden by default -->
-                 <label for="pension">Is he/she getting any pension?</label>
-                 <input type="radio" id="pensioyes" name="pension" value="yes" >
-            <label for="pensionyes">Yes</label>
-            <input type="radio" id="pensionno" name="pension" value="no"  >
-            <label for="pensionno">No</label>
-        </div>
 
-        <label for="Qualification">Enter Qualification</label>
-        <input type="text" placeholder="Qualification">
-        <label for="Occupation">Enter Occupation</label>
-        <input type="text" placeholder="Occupation">
-        <div>
-        <label for="habit">do you have any bad habits?</label>
-        <input type="radio" id="habityes" name="habit" value="yes" onclick="showhabitform()">
-            <label for="habityes">Yes</label>
-            <input type="radio" id="habitno" name="habit" value="no" on click="hidehabitform()" >
-            <label for="habitno">No</label>
-
-            <div id="habitform" style="display: none;">
-                <input type="checkbox" id="smokingCheckbox">
-                           <label for="smokingCheckbox">Smoking</label><br>
-
-<input type="checkbox" id="drinkingCheckbox">
-<label for="drinkingCheckbox">Drinking</label><br>
-
-<input type="checkbox" id="alcoholCheckbox">
-<label for="alcoholCheckbox">Other harmful substances</label><br>
-
-            </div>
-       </div> 
-    `;
-    membersContainer.appendChild(memberForm);
-
-    // Add event listener to calculate age when date of birth is selected
-    var dobInput = memberForm.querySelector("#dobInput");
-    dobInput.addEventListener("change", calculateAge);
-}
 
 function calculateAge() {
     var dobInput = this;
