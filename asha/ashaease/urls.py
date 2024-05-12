@@ -20,4 +20,7 @@ urlpatterns = [
     path('report_edit_maintain', views.report_edit_maintain, name='report_edit_maintain'),
     path('report_view', views.report_view, name='report_view'),
     path('report_delete', views.report_delete, name='report_delete'),
+    path('house_hold', views.house_hold, name='house_hold'),
+    path('children', views.children, name='children'),
+    path('pregnant', views.pregnant, name='pregnant'),    
 ]

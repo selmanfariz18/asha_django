@@ -429,3 +429,12 @@ def report_delete(request):
         report.delete()
 
         return redirect('report')
+    
+def house_hold(request):
+    return render(request, 'household.html')
+
+def children(request):
+    return render(request, 'children.html')
+
+def pregnant(request):
+    return render(request, 'pregnant.html')
