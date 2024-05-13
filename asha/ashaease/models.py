@@ -83,3 +83,14 @@ class Members(models.Model):
     occupation = models.CharField(max_length=30)
     habit = models.BooleanField(default=False)
     habittype = models.CharField(max_length=20, null=True)
+
+class Children(models.Model):
+    member = models.ForeignKey(Members, on_delete=models.CASCADE)
+    delivery = models.BooleanField(default=False)
+    threemonth = models.BooleanField(default=False)
+    sixmonth = models.BooleanField(default=False)
+    oneyear = models.BooleanField(default=False)
+    fiveyear = models.BooleanField(default=False)
+    tenyear = models.BooleanField(default=False)
+    fifteenyear = models.BooleanField(default=False)
+    reason = models.TextField()

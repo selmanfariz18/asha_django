@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from .forms import EventForm
 from django.http import JsonResponse
-from .models import Report,Heading, Questions, House, Members
+from .models import Report,Heading, Questions, House, Members, Children
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.dateparse import parse_date
@@ -491,7 +491,8 @@ def house_hold(request):
 def add_member_request(request):
     if request.method == "POST":
         id = request.POST.get('id')
-        return render(request, 'add_members.html', {'id':id})
+        house = House.objects.get(id=id)
+        return render(request, 'add_members.html', {'id':id, 'house': house})
 
 def add_member(request):
     if request.method == "POST":
@@ -542,17 +543,95 @@ def house_details(request):
 
         house = House.objects.get(id=id)
         members = Members.objects.filter(house=house)
+        children = Children.objects.all()
 
         context = {
             'house' : house,
             'members' : members,
+            'children' : children,
         }
 
         return render(request, 'house_details.html', context)
     
 
 def children(request):
-    return render(request, 'children.html')
+
+    houses = House.objects.filter(child_onboard=True)
+
+    context = {
+        'houses' : houses,
+    }
+
+    return render(request, 'children.html', context)
+
+def add_children_request(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        house = House.objects.get(id=id)
+        members = Members.objects.filter(house=house)
+        return render(request, 'add_children.html', {'house':house, 'members':members})
+    
+def add_children(request):
+    if request.method == "POST":
+        member_id = request.POST.get('id')
+        if request.POST.get('delivery'):
+            delivery = True
+        else:
+            delivery = False
+        if request.POST.get('threemonth'):
+            threemonth = True
+        else:
+            threemonth = False
+        if request.POST.get('sixmonth'):
+            sixmonth = True
+        else:
+            sixmonth = False
+        if request.POST.get('oneyear'):
+            oneyear = True
+        else:
+            oneyear = False
+        if request.POST.get('fiveyear'):
+            fiveyear = True
+        else:
+            fiveyear = False
+        if request.POST.get('tenyear'):
+            tenyear = True
+        else:
+            tenyear = False
+        if request.POST.get('fifteenyear'):
+            fifteenyear = True
+        else:
+            fifteenyear = False
+        if request.POST.get('reason'):
+            reason = request.POST.get('reason')
+        else:
+            reason = 'Null'
+
+
+        member = Members.objects.get(id=member_id)
+
+        child = Children(member=member)
+        child.delivery = delivery
+        child.threemonth = threemonth
+        child.sixmonth = sixmonth
+        child.oneyear = oneyear
+        child.fiveyear = fiveyear
+        child.tenyear = tenyear
+        child.fifteenyear = fifteenyear
+        child.reason = reason
+        child.save()
+
+        house = House.objects.get(id=member.house.id)
+
+        house.added_child_cound += 1
+
+        if house.added_child_cound == house.child_cound:
+            house.is_child_added = True
+        
+        house.save()
+        
+
+        return redirect('children')
 
 def pregnant(request):
     return render(request, 'pregnant.html')

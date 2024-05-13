@@ -138,11 +138,28 @@ input[type="text"],
 </head>
 <body>
     <div>
+        <a class="btn" href="home">Back</a>
     <input type="text" id="searchInput" placeholder="Search...">
    
-    <button class="btn" onclick="showForm()">Add</button>
+    <!-- <button class="btn" onclick="showForm()">Add</button> -->
      </div>
-    <div id="cardContainer"></div>
+     <div id="cardContainer">
+        <!-- Static content: Example cards -->
+        {% for i in houses %}
+        <div class="card">
+            <h3>House No: {{ i.house_no }}</h3>
+            <p>Children Count: {{ i.child_cound }}</p>
+            <form method="post" action="add_children_request">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{i.id}}">
+                {% if i.is_child_added == False %}
+                <button type="submit">Add Details</button>
+                {% endif %}
+            </form>
+            <!-- <p>Owner: John Doe</p> -->
+        </div>
+        {% endfor %}
+    </div>
 
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-container">
@@ -249,24 +266,6 @@ input[type="text"],
             renderCards();
         }
 
-        function renderCards() {
-            let cardContainer = document.getElementById("cardContainer");
-            cardContainer.innerHTML = "";
-            houseDetails.forEach((house, index) => {
-                let card = document.createElement("div");
-                card.classList.add("card");
-                card.innerHTML = `
-                    <h3>House No: ${house.houseNo}</h3>
-                    <p>Owner: ${house.ownerName}</p>
-                `;
-                cardContainer.appendChild(card);
-            });
-        }
-
-        // Dummy data for testing
-        houseDetails.push({ houseNo: "123", ownerName: "John Doe" });
-        houseDetails.push({ houseNo: "456", ownerName: "Jane Doe" });
-        renderCards();
 
 
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');

@@ -72,6 +72,18 @@
                     <p><strong>Any Bad Habits:</strong> {% if i.habit == True %}Yes{% else %}No{% endif %}</p>
                     <p><strong>Pregnant:</strong> .....</p>
                     <p><strong>Any Patients:</strong>.....</p>
+                    {% for j in children %}
+                    {% if j.member.id == i.id %}
+                    <p><strong>Child:</strong></p>
+                    {% if j.delivery == True %}<p>Delivery vaccine taken</p>{% endif %}
+                    {% if j.threemonth == True %}<p>Three Month vaccine taken</p>{% endif %}
+                    {% if j.sixmonth == True %}<p>Six Month vaccine taken</p>{% endif %}
+                    {% if j.oneyear == True %}<p>One year vaccine taken</p>{% endif %}
+                    {% if j.fiveyear == True %}<p>Five year vaccine taken</p>{% endif %}
+                    {% if j.tenyear == True %}<p>Ten year vaccine taken</p>{% endif %}
+                    {% if j.fifteenyear == True %}<p>Fifteen year vaccine taken</p>{% endif %}
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
             {% endfor %}

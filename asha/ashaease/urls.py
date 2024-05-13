@@ -25,6 +25,8 @@ urlpatterns = [
     path('add_member_request', views.add_member_request, name='add_member_request'),
     path('house_details', views.house_details, name='house_details'),
     path('children', views.children, name='children'),
+    path('add_children_request', views.add_children_request, name='add_children_request'),
+    path('add_children', views.add_children, name='add_children'),
     path('pregnant', views.pregnant, name='pregnant'),
     path('patient', views.patient, name='patient'),    
 ]
