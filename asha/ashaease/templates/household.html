@@ -328,8 +328,8 @@
                 {% for i in house %}
                 <div class="modal-body" id="houseDetailsContent">
                     <p><strong>House Number:</strong> {{ i.house_no }}</p>
-                    <p><strong>Address:</strong> {{ i.house_address }}</p>
-                    <p><strong>Member Count:</strong> {{ i.no_of_members }}  
+                    <!-- <p><strong>Address:</strong> {{ i.house_address }}</p>
+                    <p><strong>Member Count:</strong> {{ i.no_of_members }}   -->
                         {% if i.is_no_of_members_added == False %}
                         <form method="post" action="add_member_request">
                             {% csrf_token %}
@@ -337,18 +337,21 @@
                             <button type="submit">Add Members</button>
                         </form>
                         {% endif %}</p>
-                    <p><strong>Is there Pregnant ladies:</strong>{% if i.pregnant_onboard == True %} yes {% else %} no {% endif %}</p>
+                        <form method="post" action="house_details">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{i.id}}">
+                            <button type="submit">View Details</button>
+                        </form>
+                        {% if i.is_child_added == False and i.child_cound != 0 %} <a href="children">child details not added yet!</a> {% endif %} <br>
+                        {% if i.is_pregnant_added == False and i.pregnant_cound != 0 %} <a href="pregnant">Pregnant women details not added yet!</a> {% endif %} <br>
+                        {% if i.is_patients_added == False and i.patients_cound != 0 %} <a href="patient">Patient details not added yet!</a> {% endif %}
+                    <!-- <p><strong>Is there Pregnant ladies:</strong>{% if i.pregnant_onboard == True %} yes {% else %} no {% endif %}</p>
                     {% if i.pregnant_onboard == True %}<p><strong>Pregnant Woman Count:</strong>{{ i.pregnant_cound }}</p>{% endif %}
                     <p><strong>Is there Children:</strong>{% if i.child_onboard == True %} yes {% else %} no {% endif %}</p>
                     {% if i.child_onboard == True %}<p><strong>Children Count:</strong> {{ i.child_cound }}</p> {% endif %}
                     <p><strong>Is there Patients:</strong>{% if i.patients_onboard == True %} yes {% else %} no {% endif %}</p>
-                    {% if i.patients_onboard == True %}<p><strong>Patient Count:</strong> {{ i.patients_cound }}</p>{% endif %}
+                    {% if i.patients_onboard == True %}<p><strong>Patient Count:</strong> {{ i.patients_cound }}</p>{% endif %} -->
                 </div> <!-- Content for house details -->
-                <form method="post" action="house_details">
-                    {% csrf_token %}
-                    <input type="hidden" name="id" value="{{i.id}}">
-                    <button type="submit">View Details</button>
-                </form>
                 {% endfor %}
                 {% endif %}
             </div>

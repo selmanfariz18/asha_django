@@ -556,3 +556,6 @@ def children(request):
 
 def pregnant(request):
     return render(request, 'pregnant.html')
+
+def patient(request):
+    return render(request, 'patient.html')
