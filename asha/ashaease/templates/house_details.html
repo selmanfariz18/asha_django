@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 80%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            max-height: 500px; /* Adjust max-height as needed */
+        }
+        h1 {
+            text-align: center;
+        }
+        .house-info {
+            margin-bottom: 20px;
+        }
+        .member-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .member {
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: calc(33% - 20px); /* Adjust width as needed */
+            box-sizing: border-box;
+        }
+        .member-details {
+            padding-left: 20px;
+        }
+        .member-details p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>House Details</h1>
+        <div class="house-info">
+            <p><strong>House Number:</strong> {{ house.house_no }}</p>
+            <p><strong>Address:</strong> {{ house.house_address }}</p>
+            <p><strong>Number of Members:</strong> {{ house.no_of_members }}</p>
+        </div>
+        <div class="member-container">
+            {% for i in members %}
+            <div class="member">
+                <h2>Member 1</h2>
+                <div class="member-details">
+                    <p><strong>Name:</strong> {{ i.name }}</p>
+                    <p><strong>Age:</strong> {{ i.age }}</p>
+                    <p><strong>Gender:</strong> {{ i.gender }}</p>
+                    <p><strong>Qualification:</strong> {{ i.qualification }}</p>
+                    <p><strong>Occupation:</strong> {{ i.occupation }}</p>
+                    <p><strong>Any Bad Habits:</strong> {% if i.habit == True %}Yes{% else %}No{% endif %}</p>
+                    <p><strong>Pregnant:</strong> .....</p>
+                    <p><strong>Any Patients:</strong>.....</p>
+                </div>
+            </div>
+            {% endfor %}
+            <!-- Add m
+                ore members as needed -->
+        </div>
+    </div>
+</body>
+</html>

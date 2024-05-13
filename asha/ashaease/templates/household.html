@@ -329,6 +329,14 @@
                 <div class="modal-body" id="houseDetailsContent">
                     <p><strong>House Number:</strong> {{ i.house_no }}</p>
                     <p><strong>Address:</strong> {{ i.house_address }}</p>
+                    <p><strong>Member Count:</strong> {{ i.no_of_members }}  
+                        {% if i.is_no_of_members_added == False %}
+                        <form method="post" action="add_member_request">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{i.id}}">
+                            <button type="submit">Add Members</button>
+                        </form>
+                        {% endif %}</p>
                     <p><strong>Is there Pregnant ladies:</strong>{% if i.pregnant_onboard == True %} yes {% else %} no {% endif %}</p>
                     {% if i.pregnant_onboard == True %}<p><strong>Pregnant Woman Count:</strong>{{ i.pregnant_cound }}</p>{% endif %}
                     <p><strong>Is there Children:</strong>{% if i.child_onboard == True %} yes {% else %} no {% endif %}</p>
@@ -336,6 +344,11 @@
                     <p><strong>Is there Patients:</strong>{% if i.patients_onboard == True %} yes {% else %} no {% endif %}</p>
                     {% if i.patients_onboard == True %}<p><strong>Patient Count:</strong> {{ i.patients_cound }}</p>{% endif %}
                 </div> <!-- Content for house details -->
+                <form method="post" action="house_details">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{i.id}}">
+                    <button type="submit">View Details</button>
+                </form>
                 {% endfor %}
                 {% endif %}
             </div>

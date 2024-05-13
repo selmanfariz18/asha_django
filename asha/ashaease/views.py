@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from .forms import EventForm
 from django.http import JsonResponse
-from .models import Report,Heading, Questions, House
+from .models import Report,Heading, Questions, House, Members
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.dateparse import parse_date
@@ -487,6 +487,69 @@ def house_hold(request):
     }
 
     return render(request, 'household.html', context)
+
+def add_member_request(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        return render(request, 'add_members.html', {'id':id})
+
+def add_member(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        name = request.POST.get('name')
+        gender = request.POST.get('gender')
+        dob = request.POST.get('dob')
+        age = request.POST.get('age')
+        qualification = request.POST.get('qualification')
+        occupation = request.POST.get('occupation')
+        habit = request.POST.get('habit')
+        if habit == 'True':
+            habit = True
+            habittype = request.POST.get('habittype')
+        else:
+            habit = False
+
+        # print(id, dob, age, habit)
+
+        house = House.objects.get(id=id)
+
+        member = Members(house=house)
+        member.name = name
+        member.gender = gender
+        member.dob = dob
+        member.age = age
+        member.qualification = qualification
+        member.occupation = occupation
+        member.habit = habit
+        if habit == True:
+            member.habittype = habittype
+        else:
+            member.habittype = 'Null'
+        member.save()
+
+        house.added_no_of_members += 1
+
+        if house.added_no_of_members == house.no_of_members:
+            house.is_no_of_members_added = True
+        
+        house.save()
+
+        return redirect('house_hold')
+    
+def house_details(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+
+        house = House.objects.get(id=id)
+        members = Members.objects.filter(house=house)
+
+        context = {
+            'house' : house,
+            'members' : members,
+        }
+
+        return render(request, 'house_details.html', context)
+    
 
 def children(request):
     return render(request, 'children.html')

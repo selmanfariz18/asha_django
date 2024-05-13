@@ -72,3 +72,14 @@ class House(models.Model):
     patients_cound = models.IntegerField(default=0)
     added_patients_cound = models.IntegerField(default=0)
     is_patients_added = models.BooleanField(default=False)
+
+class Members(models.Model):
+    house = models.ForeignKey(House, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20)
+    gender = models.CharField(max_length=20)
+    dob = models.DateField()
+    age = models.IntegerField(default=0)
+    qualification = models.CharField(max_length=30)
+    occupation = models.CharField(max_length=30)
+    habit = models.BooleanField(default=False)
+    habittype = models.CharField(max_length=20, null=True)

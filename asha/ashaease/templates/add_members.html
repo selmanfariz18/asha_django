@@ -251,57 +251,80 @@
 </head>
 <body>
 
-    <div class="overlay" id="addHouseForm"> <!-- Add House form -->
+    <div id="addHouseForm"> <!-- Add House form -->
         <div style="width: 50%;" class="form">
             <h3>Members</h3>
+            <form method="post" action="add_member">
+                {% csrf_token %}
             <div id="membersContainer">
                 <label for="name">Full Name:</label>
-                <input type="text" placeholder="Enter Name">
+                <input type="text" placeholder="Enter Name" name="name" required>
                 <label for="genderSelect">Gender</label>
-                <select id="genderSelect" placeholder="SelectGender">
+                <select id="genderSelect" placeholder="SelectGender" name="gender" required>
                     <option value="">Select Gender</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                 </select>
                 <label for="dobInput">Date of Birth</label>
-                <input type="date" id="dobInput" placeholder="Enter Date of Birth">
-                <label for="dobInput">Age</label>
+                <input type="date" id="dobInput" name="dob" placeholder="Enter Date of Birth" required>
+                
+                <label for="ageInput">Age</label>
                 <div class="age">
-                    <input type="number" id="ageInput" placeholder="Age">
-                    <button id="gotChildrenButton" style="display: none;">Got Children</button> <!-- Hidden by default -->
+                    <input type="number" id="ageInput" name="age" placeholder="Age">
                 </div>
-                <div id="pensionInput" style="display: none;"> <!-- Hidden by default -->
+                <!-- <div id="pensionInput" style="display: none;"> 
                          <label for="pension">Is he/she getting any pension?</label>
                          <input type="radio" id="pensioyes" name="pension" value="yes" >
                     <label for="pensionyes">Yes</label>
                     <input type="radio" id="pensionno" name="pension" value="no"  >
                     <label for="pensionno">No</label>
-                </div>        
-                    <label for="Qualification">Enter Qualification</label>
-                    <input type="text" placeholder="Qualification">
-                    <label for="Occupation">Enter Occupation</label>
-                    <input type="text" placeholder="Occupation">
+                </div>         -->
+                <label for="Qualification">Enter Qualification</label>
+                <input type="text" placeholder="Qualification" name="qualification" required>
+                <label for="Occupation">Enter Occupation</label>
+                <input type="text" placeholder="Occupation" name="occupation" required>
                 <div>
                     <label for="habit">do you have any bad habits?</label>
-                    <input type="radio" id="habityes" name="habit" value="yes" onclick="showhabitform()">
+                    <input type="radio" id="habityes" name="habit" value="True" onclick="showhabitform()">
                     <label for="habityes">Yes</label>
-                    <input type="radio" id="habitno" name="habit" value="no" on click="hidehabitform()" >
+                    <input type="radio" id="habitno" name="habit" value="False" onclick="hidehabitform()" >
                     <label for="habitno">No</label>
-        
+            
                     <div id="habitform" style="display: none;">
-                        <input type="checkbox" id="smokingCheckbox">
-                                   <label for="smokingCheckbox">Smoking</label><br>
-        
-                        <input type="checkbox" id="drinkingCheckbox">
-                        <label for="drinkingCheckbox">Drinking</label><br>
-                        
-                        <input type="checkbox" id="alcoholCheckbox">
-                        <label for="alcoholCheckbox">Other harmful substances</label><br>
-        
+                        <input type="checkbox" name="habittype" value="Smoking" id="smokingCheckbox">
+                        <label for="smokingCheckbox">Smoking</label><br>
+                        <input type="checkbox" name="habittype" value="Drinking" id="drinkingCheckbox">
+                        <label for="drinkingCheckbox">Drinking</label><br>                            
+                        <input type="checkbox" name="habittype" value="Other harmful substances" id="alcoholCheckbox">
+                        <label for="alcoholCheckbox">Other harmful substances</label><br>            
                     </div>
-               </div> 
+                </div> 
             </div> <!-- Container for member forms -->
-            <button>Add Member</button> <!-- Add Member button -->
+            <input type="hidden" name="id" value="{{id}}">
+            <button type="submit">Add Member</button> <!-- Add Member button -->
+            </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('dobInput').addEventListener('change', function() {
+            var dob = new Date(this.value);
+            var today = new Date();
+            var age = today.getFullYear() - dob.getFullYear();
+            var m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            document.getElementById('ageInput').value = age; // Set the age input value
+        });
+    
+        function showhabitform() {
+            document.getElementById("habitform").style.display = "block";
+        }
+    
+        function hidehabitform() {
+            document.getElementById("habitform").style.display = "none";
+        }
+    </script>
+</body>
