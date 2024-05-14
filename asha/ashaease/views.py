@@ -545,12 +545,14 @@ def house_details(request):
         members = Members.objects.filter(house=house)
         children = Children.objects.all()
         pregnant = Pregnant.objects.all()
+        patient = Patient.objects.all()
 
         context = {
             'house' : house,
             'members' : members,
             'children' : children,
             'pregnant' : pregnant,
+            'patient' : patient,
         }
 
         return render(request, 'house_details.html', context)

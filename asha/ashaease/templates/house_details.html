@@ -70,6 +70,7 @@
                     <p><strong>Qualification:</strong> {{ i.qualification }}</p>
                     <p><strong>Occupation:</strong> {{ i.occupation }}</p>
                     <p><strong>Any Bad Habits:</strong> {% if i.habit == True %}Yes{% else %}No{% endif %}</p>
+                    <!-- pregnant section -->
                     {% for p in pregnant %}
                     {% if p.member.id == i.id %}
                     <p><strong>Pregnant:</strong></p>
@@ -260,7 +261,16 @@
                     </p>
                     {% endif %}
                     {% endfor %}
-                    <p><strong>Any Patients:</strong>.....</p>
+                    <!-- patient section -->
+                    {% for k in patient %}
+                    {% if k.member.id == i.id %}
+                    <p><strong>Patient:</strong></p>
+                    <p>Disease details: {{ k.disease_details }}</p>
+                    {% if k.pain == True %} <p>Patient registered on pain and paliative</p> {% endif %}
+                    {% if k.disease == True %} <p>Treatments are going well</p> {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    <!-- children section -->
                     {% for j in children %}
                     {% if j.member.id == i.id %}
                     <p><strong>Child:</strong></p>

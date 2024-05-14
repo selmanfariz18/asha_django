@@ -244,6 +244,34 @@
     .age button:hover {
         background-color: #0056b3;
     }
+    .btn {
+   
+   width: 8%;
+   background-color: #4CAF50; /* Green background */
+   border: none; /* No border */
+   color: white; /* White text */
+   padding: 10px 20px; /* Padding */
+   text-align: center; /* Center text */
+   text-decoration: none; /* No underline */
+   display: inline-block; /* Display as inline block */
+   font-size: 16px; /* Font size */
+   border-radius: 5px; /* Rounded corners */
+   cursor: pointer; /* Cursor on hover */
+}
+
+/* Hover effect */
+.btn:hover {
+   background-color: #45a049; /* Darker green */
+}
+.card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+        }
 
 
   
@@ -252,10 +280,38 @@
 <body>
     <div class="dashboard">
         <h1>House Dashboard</h1>
-        <input type="text" id="searchBar" placeholder="Search House Number..." oninput="filterHouses()"> <!-- Search bar -->
-        <button id="addHouseButton" onclick="toggleAddHouseForm()">Add House</button> <!-- Add House button -->
-        <div id="housesList"></div> <!-- Houses list -->
+        <div style="display: flex;">
+            <a class="btn" href="home" style="margin-right: 10px;">Back</a>
+            <input type="text" id="searchInput" placeholder="Search..." style="margin-right: 10px;">
+            <button id="addHouseButton" onclick="toggleAddHouseForm()">Add House</button>
+            <!-- <button class="btn" onclick="showForm()">Add</button> -->
+        </div>
+        <div id="cardContainer">
+            <!-- Static content: Example cards -->
+            {% for i in house %}
+            <div class="card">
+                <h3>House No: {{ i.house_no }}</h3>
+                <p>Patient Count: {{ i.patients_cound }}</p>
+                {% if i.is_no_of_members_added == False %}
+                <form method="post" action="add_member_request">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{i.id}}">
+                    <button type="submit">Add Members</button>
+                </form>
+                {% endif %}
+                <form method="post" action="house_details">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{i.id}}">
+                    <button type="submit">View Details</button>
+                </form>
+                <p>{% if i.is_child_added == False and i.child_cound != 0 %} <a href="children">child details not added yet!</a> {% endif %}</p>
+                <p>{% if i.is_pregnant_added == False and i.pregnant_cound != 0 %} <a href="pregnant">Pregnant women details not added yet!</a> {% endif %}</p>
+                <p>{% if i.is_patients_added == False and i.patients_cound != 0 %} <a href="patient">Patient details not added yet!</a> {% endif %}</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+
 
     <div class="overlay" id="addHouseForm" style="display: none;"> <!-- Add House form -->
         <div style="width: 50%;" class="form">
@@ -317,47 +373,7 @@
         </div>
     </div>
 
-    <div class="modal" id="houseDetailsModal"> <!-- House Details modal -->
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">House Details</h5>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                </div>
-                {% if house %}
-                {% for i in house %}
-                <div class="modal-body" id="houseDetailsContent">
-                    <p><strong>House Number:</strong> {{ i.house_no }}</p>
-                    <!-- <p><strong>Address:</strong> {{ i.house_address }}</p>
-                    <p><strong>Member Count:</strong> {{ i.no_of_members }}   -->
-                        {% if i.is_no_of_members_added == False %}
-                        <form method="post" action="add_member_request">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{i.id}}">
-                            <button type="submit">Add Members</button>
-                        </form>
-                        {% endif %}</p>
-                        <form method="post" action="house_details">
-                            {% csrf_token %}
-                            <input type="hidden" name="id" value="{{i.id}}">
-                            <button type="submit">View Details</button>
-                        </form>
-                        {% if i.is_child_added == False and i.child_cound != 0 %} <a href="children">child details not added yet!</a> {% endif %} <br>
-                        {% if i.is_pregnant_added == False and i.pregnant_cound != 0 %} <a href="pregnant">Pregnant women details not added yet!</a> {% endif %} <br>
-                        {% if i.is_patients_added == False and i.patients_cound != 0 %} <a href="patient">Patient details not added yet!</a> {% endif %}
-                    <!-- <p><strong>Is there Pregnant ladies:</strong>{% if i.pregnant_onboard == True %} yes {% else %} no {% endif %}</p>
-                    {% if i.pregnant_onboard == True %}<p><strong>Pregnant Woman Count:</strong>{{ i.pregnant_cound }}</p>{% endif %}
-                    <p><strong>Is there Children:</strong>{% if i.child_onboard == True %} yes {% else %} no {% endif %}</p>
-                    {% if i.child_onboard == True %}<p><strong>Children Count:</strong> {{ i.child_cound }}</p> {% endif %}
-                    <p><strong>Is there Patients:</strong>{% if i.patients_onboard == True %} yes {% else %} no {% endif %}</p>
-                    {% if i.patients_onboard == True %}<p><strong>Patient Count:</strong> {{ i.patients_cound }}</p>{% endif %} -->
-                </div> <!-- Content for house details -->
-                {% endfor %}
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
+    
     <script>
         // Array to store house details
         var houses = [];
@@ -375,9 +391,6 @@
         restorePlaceholderOption();
     }
 }
-
-
-
 
 function showhabitform() {
             document.getElementById("habitform").style.display = "block";
@@ -456,22 +469,7 @@ function showhabitform() {
             clearFormFields();
         }
 
-        function updateHousesList() {
-            var list = document.getElementById("housesList");
-            list.innerHTML = ""; // Clear the list
-
-            houses.forEach(function(house, index) {
-                var listItem = document.createElement("div");
-                listItem.classList.add("house-card");
-                listItem.setAttribute("data-bs-toggle", "modal");
-                listItem.setAttribute("data-bs-target", "#houseDetailsModal");
-                listItem.onclick = function() {
-                    displayHouseDetails(house);
-                };
-                listItem.innerHTML = `<h3>House ${house.houseNumber}</h3>`;
-                list.appendChild(listItem);
-            });
-        }
+     
 
 
         
@@ -494,39 +492,7 @@ function showhabitform() {
 
 
 
-function calculateAge() {
-    var dobInput = this;
-    var ageInput = dobInput.parentNode.querySelector("#ageInput");
 
-    var dob = new Date(dobInput.value);
-    var today = new Date();
-    var age = today.getFullYear() - dob.getFullYear();
-    var monthDiff = today.getMonth() - dob.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-        age--;
-    }
-
-    // Update the age input field
-    ageInput.value = age;
-
-    // Check if age is 60 or above
-    if (age >= 60) {
-        // If yes, display the pension input box
-        document.getElementById("pensionInput").style.display = "block";
-    } else {
-        // If age is below 60, hide the pension input box
-        document.getElementById("pensionInput").style.display = "none";
-    }
-    
-    // Check if age is 15 or less
-    if (age <= 15) {
-        // If yes, display the "Got Children" button
-        document.getElementById("gotChildrenButton").style.display = "block";
-    } else {
-        // If age is above 15, hide the "Got Children" button
-        document.getElementById("gotChildrenButton").style.display = "none";
-    }
-}
     
 
 
@@ -590,66 +556,6 @@ function restorePlaceholderOption() {
         memberNumberSelect.appendChild(placeholderOption);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </script>
+</script>
 </body>
 </html>
