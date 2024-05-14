@@ -544,11 +544,13 @@ def house_details(request):
         house = House.objects.get(id=id)
         members = Members.objects.filter(house=house)
         children = Children.objects.all()
+        pregnant = Pregnant.objects.all()
 
         context = {
             'house' : house,
             'members' : members,
             'children' : children,
+            'pregnant' : pregnant,
         }
 
         return render(request, 'house_details.html', context)
