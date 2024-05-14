@@ -62,7 +62,7 @@
         <div class="member-container">
             {% for i in members %}
             <div class="member">
-                <h2>Member 1</h2>
+                <h2>Member {{ forloop.counter }}</h2>
                 <div class="member-details">
                     <p><strong>Name:</strong> {{ i.name }}</p>
                     <p><strong>Age:</strong> {{ i.age }}</p>
