@@ -28,5 +28,7 @@ urlpatterns = [
     path('add_children_request', views.add_children_request, name='add_children_request'),
     path('add_children', views.add_children, name='add_children'),
     path('pregnant', views.pregnant, name='pregnant'),
+    path('add_pregnant_request', views.add_pregnant_request, name='add_pregnant_request'),
+    path('add_pregnant', views.add_pregnant, name='add_pregnant'),
     path('patient', views.patient, name='patient'),    
 ]

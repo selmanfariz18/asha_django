@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from .forms import EventForm
 from django.http import JsonResponse
-from .models import Report,Heading, Questions, House, Members, Children
+from .models import Report,Heading, Questions, House, Members, Children, Pregnant
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.dateparse import parse_date
@@ -634,7 +634,75 @@ def add_children(request):
         return redirect('children')
 
 def pregnant(request):
-    return render(request, 'pregnant.html')
+
+    houses = House.objects.filter(pregnant_onboard=True)
+
+    context = {
+        'houses' : houses,
+    }
+
+    return render(request, 'pregnant.html', context)
+
+def add_pregnant_request(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        house = House.objects.get(id=id)
+        members = Members.objects.filter(house=house)
+        return render(request, 'add_pregnant.html', {'house':house, 'members':members})
+    
+def add_pregnant(request):
+    if request.method == "POST":
+        member_id = request.POST.get('id')
+        pregnancyMonths = request.POST.get('pregnancyMonths')
+        month1_weight = bool(request.POST.get('month1_weight'))
+
+        member = Members.objects.get(id=member_id)
+
+        pregnant = Pregnant(member=member)
+        pregnant.pregnancy_months = pregnancyMonths
+        pregnant.month1_weight = bool(request.POST.get('month1_weight'))
+        pregnant.month1_bp = bool(request.POST.get('month1_bp'))
+        pregnant.month1_hr = bool(request.POST.get('month1_hr'))
+        pregnant.month2_weight = bool(request.POST.get('month2_weight'))
+        pregnant.month2_bp = bool(request.POST.get('month2_bp'))
+        pregnant.month2_hr = bool(request.POST.get('month2_hr'))
+        pregnant.month3_weight = bool(request.POST.get('month3_weight'))
+        pregnant.month3_bp = bool(request.POST.get('month3_bp'))
+        pregnant.month3_hr = bool(request.POST.get('month3_hr'))
+        pregnant.month4_weight = bool(request.POST.get('month4_weight'))
+        pregnant.month4_bp = bool(request.POST.get('month4_bp'))
+        pregnant.month4_hr = bool(request.POST.get('month4_hr'))
+        pregnant.month5_weight = bool(request.POST.get('month5_weight'))
+        pregnant.month5_bp = bool(request.POST.get('month5_bp'))
+        pregnant.month5_hr = bool(request.POST.get('month5_hr'))
+        pregnant.month6_weight = bool(request.POST.get('month6_weight'))
+        pregnant.month6_bp = bool(request.POST.get('month6_bp'))
+        pregnant.month6_hr = bool(request.POST.get('month6_hr'))
+        pregnant.month7_weight = bool(request.POST.get('month7_weight'))
+        pregnant.month7_bp = bool(request.POST.get('month7_bp'))
+        pregnant.month7_hr = bool(request.POST.get('month7_hr'))
+        pregnant.month8_weight = bool(request.POST.get('month8_weight'))
+        pregnant.month8_bp = bool(request.POST.get('month8_bp'))
+        pregnant.month8_hr = bool(request.POST.get('month8_hr'))
+        pregnant.month9_weight = bool(request.POST.get('month9_weight'))
+        pregnant.month9_bp = bool(request.POST.get('month9_bp'))
+        pregnant.month9_hr = bool(request.POST.get('month9_hr'))
+        pregnant.month10_weight = bool(request.POST.get('month10_weight'))
+        pregnant.month10_bp = bool(request.POST.get('month10_bp'))
+        pregnant.month10_hr = bool(request.POST.get('month10_hr'))
+        pregnant.save()
+
+        house = House.objects.get(id=member.house.id)
+
+        house.added_pregnant_cound += 1
+
+        if house.added_pregnant_cound == house.pregnant_cound:
+            house.is_pregnant_added = True
+        
+        house.save()
+        
+
+        return redirect('pregnant')
 
 def patient(request):
     return render(request, 'patient.html')

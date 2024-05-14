@@ -24,9 +24,9 @@
             left: 0;
             width: 100%;
             height: 100%;
+            display: flex;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            display: none;
             justify-content: center;
             align-items: center;
         }
@@ -38,7 +38,7 @@
             position: relative;
         }
         .form-container {
-            display: none;
+            display: block;
         }
         .form-container.show {
             display: block;
@@ -134,50 +134,72 @@ input[type="text"],
             display: inline-block;
             margin-right: 20px;
         }
+        select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+        appearance: none; /* Remove default appearance */
+        -webkit-appearance: none; /* Remove default appearance for webkit browsers */
+        -moz-appearance: none; /* Remove default appearance for mozilla browsers */
+    }
+
+    /* Custom styles for dropdown arrow */
+    select::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #666; /* Arrow color */
+    }
+
+    /* Custom styles for dropdown when focused */
+    select:focus {
+        outline: none; /* Remove focus outline */
+        border-color: #007bff; /* Border color when focused */
+    }
+
+    /* Custom styles for dropdown options */
+    select option {
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+    }
+
     </style>
 </head>
 <body>
-    <div>
-        <a class="btn" href="home">Back</a>
-        <input type="text" id="searchInput" placeholder="Search...">
-    
-        <!-- <button class="btn" onclick="showForm()">Add</button> -->
-     </div>
-     <div id="cardContainer">
-        <!-- Static content: Example cards -->
-        {% for i in houses %}
-        <div class="card">
-            <h3>House No: {{ i.house_no }}</h3>
-            <p>Pregnant Women Count: {{ i.pregnant_cound }}</p>
-            <form method="post" action="add_pregnant_request">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{i.id}}">
-                {% if i.is_pregnant_added == False %}
-                <button type="submit">Add Details</button>
-                {% endif %}
-            </form>
-            <!-- <p>Owner: John Doe</p> -->
-        </div>
-        {% endfor %}
-    </div>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-container">
+    <div id="modalOverlay" class="modal-overlay">
+        <div style="width: 50%;" class="form">
             
-            <form id="addForm" class="form-container">
+            <form id="addForm" class="form-container" method="post" action="add_pregnant">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="houseNo">House No:</label>
-                    <input type="text" id="houseNo" name="houseNo" required>
+                    <input type="text" id="houseNo" name="houseNo" placeholder="{{house.house_no}}" value="{{house.house_no}}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="ownerName"> Name:</label>
-                    <input type="text" id="ownerName" name="ownerName" required>
+                    <label for="ownerName">Full Name:</label>
+                    <select id="age" name="id" required>
+                        <option value="">Name</option>
+                        {% for member in members %}
+                        <option value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
 
                 <div class="form-group">
                     <label for="pregnancyMonths">Months Pregnant:</label>
-                    <select id="pregnancyMonths" name="pregnancyMonths">
-                        <option value="0">Select</option>
+                    <select id="pregnancyMonths" name="pregnancyMonths" required>
+                        <option value="">Select</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -195,187 +217,158 @@ input[type="text"],
                     <label>Month 1:</label>
                     <!-- 10 sets of checkboxes -->
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                        <input type="checkbox" name="month1_weight" id="weightCheck_0" value="True">
                         <label for="weightCheck_0">Weight</label><br>
                     </div>
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                        <input type="checkbox" name="month1_bp" id="bpCheck_0" value="True">
                         <label for="bpCheck_0">BP</label><br>
                     </div>
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                        <input type="checkbox" name="month1_hr" id="hpCheck_0" value="True">
                         <label for="hpCheck_0">HR</label><br>
                     </div>
                     <div id="checkboxesContainer" class="form-group">
                         <label>Month 2:</label>
                         <!-- 10 sets of checkboxes -->
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                            <input type="checkbox" name="month2_weight" id="weightCheck_0" value="True">
                             <label for="weightCheck_0">Weight</label><br>
                         </div>
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                            <input type="checkbox" name="month2_bp" id="bpCheck_0" value="True">
                             <label for="bpCheck_0">BP</label><br>
                         </div>
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                            <input type="checkbox" name="month2_hr" id="hpCheck_0" value="True">
                             <label for="hpCheck_0">HR</label><br>
                         </div>
                         <div id="checkboxesContainer" class="form-group">
                             <label>Month 3:</label>
                             <!-- 10 sets of checkboxes -->
                             <div class="checkbox-wrapper">
-                                <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                <input type="checkbox" name="month3_weight" id="weightCheck_0" value="True">
                                 <label for="weightCheck_0">Weight</label><br>
                             </div>
                             <div class="checkbox-wrapper">
-                                <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                <input type="checkbox" name="month3_bp" id="bpCheck_0" value="True">
                                 <label for="bpCheck_0">BP</label><br>
                             </div>
                             <div class="checkbox-wrapper">
-                                <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                <input type="checkbox" name="month3_hr" id="hpCheck_0" value="True">
                                 <label for="hpCheck_0">HR</label><br>
                             </div>
                             <div id="checkboxesContainer" class="form-group">
                                 <label>Month 4:</label>
                                 <!-- 10 sets of checkboxes -->
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                    <input type="checkbox" name="month4_weight" id="weightCheck_0" value="True">
                                     <label for="weightCheck_0">Weight</label><br>
                                 </div>
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                    <input type="checkbox" name="month4_bp" id="bpCheck_0" value="True">
                                     <label for="bpCheck_0">BP</label><br>
                                 </div>
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                    <input type="checkbox" name="month4_hr" id="hpCheck_0" value="True">
                                     <label for="hpCheck_0">HR</label><br>
                                 </div>
                                 <div id="checkboxesContainer" class="form-group">
                                     <label>Month 5:</label>
                                     <!-- 10 sets of checkboxes -->
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                        <input type="checkbox" name="month5_weight" id="weightCheck_0" value="True">
                                         <label for="weightCheck_0">Weight</label><br>
                                     </div>
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                        <input type="checkbox" name="month5_bp" id="bpCheck_0" value="True">
                                         <label for="bpCheck_0">BP</label><br>
                                     </div>
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                        <input type="checkbox" name="month5_hr" id="hpCheck_0" value="True">
                                         <label for="hpCheck_0">HR</label><br>
                                     </div>
                                     <div id="checkboxesContainer" class="form-group">
                                         <label>Month 6:</label>
                                         <!-- 10 sets of checkboxes -->
                                         <div class="checkbox-wrapper">
-                                            <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                            <input type="checkbox" name="month6_weight" id="weightCheck_0" value="True">
                                             <label for="weightCheck_0">Weight</label><br>
                                         </div>
                                         <div class="checkbox-wrapper">
-                                            <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                            <input type="checkbox" name="month6_bp" id="bpCheck_0" value="True">
                                             <label for="bpCheck_0">BP</label><br>
                                         </div>
                                         <div class="checkbox-wrapper">
-                                            <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                            <input type="checkbox" name="month6_hr" id="hpCheck_0" value="True">
                                             <label for="hpCheck_0">HR</label><br>
                                         </div>
                                         <div id="checkboxesContainer" class="form-group">
                                             <label>Month 7:</label>
                                             <!-- 10 sets of checkboxes -->
                                             <div class="checkbox-wrapper">
-                                                <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                                <input type="checkbox" name="month7_weight" id="weightCheck_0" value="True">
                                                 <label for="weightCheck_0">Weight</label><br>
                                             </div>
                                             <div class="checkbox-wrapper">
-                                                <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                                <input type="checkbox" name="month7_bp" id="bpCheck_0" value="True">
                                                 <label for="bpCheck_0">BP</label><br>
                                             </div>
                                             <div class="checkbox-wrapper">
-                                                <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                                <input type="checkbox" name="month_hr" id="hpCheck_0" value="True">
                                                 <label for="hpCheck_0">HR</label><br>
                                             </div>
                                             <div id="checkboxesContainer" class="form-group">
                                                 <label>Month 8:</label>
                                                 <!-- 10 sets of checkboxes -->
                                                 <div class="checkbox-wrapper">
-                                                    <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                                    <input type="checkbox" name="month8_weight" id="weightCheck_0" value="True">
                                                     <label for="weightCheck_0">Weight</label><br>
                                                 </div>
                                                 <div class="checkbox-wrapper">
-                                                    <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                                    <input type="checkbox" name="month8_bp" id="bpCheck_0" value="True">
                                                     <label for="bpCheck_0">BP</label><br>
                                                 </div>
                                                 <div class="checkbox-wrapper">
-                                                    <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                                    <input type="checkbox" name="month8_hr" id="hpCheck_0" value="True">
                                                     <label for="hpCheck_0">HR</label><br>
                                                 </div>
                                                 <div id="checkboxesContainer" class="form-group">
                                                     <label>Month 9:</label>
                                                     <!-- 10 sets of checkboxes -->
                                                     <div class="checkbox-wrapper">
-                                                        <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                                        <input type="checkbox" name="month9_weight" id="weightCheck_0" value="True">
                                                         <label for="weightCheck_0">Weight</label><br>
                                                     </div>
                                                     <div class="checkbox-wrapper">
-                                                        <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                                        <input type="checkbox" name="month9_bp" id="bpCheck_0" value="True">
                                                         <label for="bpCheck_0">BP</label><br>
                                                     </div>
                                                     <div class="checkbox-wrapper">
-                                                        <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                                        <input type="checkbox" name="month9_hr" id="hpCheck_0" value="True">
                                                         <label for="hpCheck_0">HR</label><br>
                                                     </div>
                                                     <div id="checkboxesContainer" class="form-group">
                                                         <label>Month 10:</label>
                                                         <!-- 10 sets of checkboxes -->
                                                         <div class="checkbox-wrapper">
-                                                            <input type="checkbox" name="healthCheck" id="weightCheck_0">
+                                                            <input type="checkbox" name="month10_weight" id="weightCheck_0" value="True">
                                                             <label for="weightCheck_0">Weight</label><br>
                                                         </div>
                                                         <div class="checkbox-wrapper">
-                                                            <input type="checkbox" name="healthCheck" id="bpCheck_0">
+                                                            <input type="checkbox" name="month10_bp" id="bpCheck_0" value="True">
                                                             <label for="bpCheck_0">BP</label><br>
                                                         </div>
                                                         <div class="checkbox-wrapper">
-                                                            <input type="checkbox" name="healthCheck" id="hpCheck_0">
+                                                            <input type="checkbox" name="month10_hr" id="hpCheck_0" value="True">
                                                             <label for="hpCheck_0">HR</label><br>
                                                         </div>
                     <!-- Repeat above div for 9 more times -->
                     <!-- Feel free to adjust the ids of checkboxes as per your requirement -->
                 </div>
-                <button class="sbtn" type="button" onclick="saveDetails()">Save</button>
-                <button class="sbtn" type="button" onclick="hideForm()">Close</button>
+                <button class="sbtn" type="submit">Save</button>
+                <button class="sbtn"><a href="pregnant">Close</a></button>
             </form>
         </div>
     </div>
-
-    <script>
-        let houseDetails = [];
-        const modalOverlay = document.getElementById("modalOverlay");
-
-        function showForm() {
-            modalOverlay.style.display = "flex";
-            document.getElementById("addForm").classList.add("show");
-        }
-
-        function hideForm() {
-            modalOverlay.style.display = "none";
-            document.getElementById("addForm").classList.remove("show");
-        }
-
-        function saveDetails() {
-            let houseNo = document.getElementById("houseNo").value;
-            let ownerName = document.getElementById("ownerName").value;
-
-            houseDetails.push({ houseNo, ownerName });
-            hideForm();
-            renderCards();
-        }
-
-
-        // Dummy data for testing
-   
-    </script>
 </body>
-</html>
