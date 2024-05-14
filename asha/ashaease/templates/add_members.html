@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+       
+        
+        .dashboard {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+
+
+        /* CSS styles for Add House Form */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            max-width: 600px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; 
+            max-height: 70vh;
+
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+
+        .member-form {
+            margin-top: 10px;
+        }
+
+        /* CSS styles for House Cards */
+        .house-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .house-card:hover {
+            background-color: #f0f0f0;
+        }
+
+        .dashboard {
+            margin: 20px;
+        }
+        .house-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .house-card:hover {
+            background-color: #f0f0f0;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .member-form {
+            margin-top: 10px;
+        }
+
+        #membernumber {
+        position: relative;
+    }
+
+    #membernumber option {
+        position:static;
+        top: 30px;
+        left: 0;
+        width: 100%;
+    }
+
+
+    .radio-button-container {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Adjust as needed */
+        margin-bottom: 20px;
+    }
+
+    .patient-button {
+        position: relative;
+        left: 400px; /* Pushes the button to the right */
+        bottom: 20px;
+    }
+
+/* Add your CSS styles here */
+
+    /* Custom styles for dropdown lists */
+    select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+        appearance: none; /* Remove default appearance */
+        -webkit-appearance: none; /* Remove default appearance for webkit browsers */
+        -moz-appearance: none; /* Remove default appearance for mozilla browsers */
+    }
+
+    /* Custom styles for dropdown arrow */
+    select::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #666; /* Arrow color */
+    }
+
+    /* Custom styles for dropdown when focused */
+    select:focus {
+        outline: none; /* Remove focus outline */
+        border-color: #007bff; /* Border color when focused */
+    }
+
+    /* Custom styles for dropdown options */
+    select option {
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+    }
+
+   
+   
+
+    #dobInput {
+        padding: 8px;
+        margin-bottom: 10px;
+        width: 97%;
+        box-sizing: border-box; /* Ensures padding and border are included in the width */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    #ageInput {
+        padding: 8px;
+        margin-bottom: 10px;
+        width: 57%;
+        box-sizing: border-box; /* Ensures padding and border are included in the width */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+
+    #dobInput::placeholder, #ageInput::placeholder {
+        color: #999;
+    }
+
+    #dobInput:focus, #ageInput:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    #dobInput:hover, #ageInput:hover {
+        border-color: #007bff;
+    }
+
+    .age {
+        display: flex;
+        align-items: center;
+    }
+
+    .age input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 200px; /* Adjust the width as needed */
+        margin-right: 10px;
+    }
+
+    .age button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: -5px;
+    }
+
+    .age button:hover {
+        background-color: #0056b3;
+    }
+
+
+  
+    </style>
+</head>
+<body>
+
+    <div id="addHouseForm"> <!-- Add House form -->
+        <div style="width: 50%;" class="form">
+            <h3>Members</h3>
+            <p>{{ house.added_no_of_members }} out of {{ house.no_of_members }} member</p>
+            <form method="post" action="add_member">
+                {% csrf_token %}
+            <div id="membersContainer">
+                <label for="name">Full Name:</label>
+                <input type="text" placeholder="Enter Name" name="name" required>
+                <label for="genderSelect">Gender</label>
+                <select id="genderSelect" placeholder="SelectGender" name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+                <label for="dobInput">Date of Birth</label>
+                <input type="date" id="dobInput" name="dob" placeholder="Enter Date of Birth" required>
+                
+                <label for="ageInput">Age</label>
+                <div class="age">
+                    <input type="number" id="ageInput" name="age" placeholder="Age">
+                </div>
+                <!-- <div id="pensionInput" style="display: none;"> 
+                         <label for="pension">Is he/she getting any pension?</label>
+                         <input type="radio" id="pensioyes" name="pension" value="yes" >
+                    <label for="pensionyes">Yes</label>
+                    <input type="radio" id="pensionno" name="pension" value="no"  >
+                    <label for="pensionno">No</label>
+                </div>         -->
+                <label for="Qualification">Enter Qualification</label>
+                <input type="text" placeholder="Qualification" name="qualification" required>
+                <label for="Occupation">Enter Occupation</label>
+                <input type="text" placeholder="Occupation" name="occupation" required>
+                <div>
+                    <label for="habit">do you have any bad habits?</label>
+                    <input type="radio" id="habityes" name="habit" value="True" onclick="showhabitform()">
+                    <label for="habityes">Yes</label>
+                    <input type="radio" id="habitno" name="habit" value="False" onclick="hidehabitform()" >
+                    <label for="habitno">No</label>
+            
+                    <div id="habitform" style="display: none;">
+                        <input type="checkbox" name="habittype" value="Smoking" id="smokingCheckbox">
+                        <label for="smokingCheckbox">Smoking</label><br>
+                        <input type="checkbox" name="habittype" value="Drinking" id="drinkingCheckbox">
+                        <label for="drinkingCheckbox">Drinking</label><br>                            
+                        <input type="checkbox" name="habittype" value="Other harmful substances" id="alcoholCheckbox">
+                        <label for="alcoholCheckbox">Other harmful substances</label><br>            
+                    </div>
+                </div> 
+            </div> <!-- Container for member forms -->
+            <input type="hidden" name="id" value="{{id}}">
+            <button type="submit">Add Member</button> <!-- Add Member button -->
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('dobInput').addEventListener('change', function() {
+            var dob = new Date(this.value);
+            var today = new Date();
+            var age = today.getFullYear() - dob.getFullYear();
+            var m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            document.getElementById('ageInput').value = age; // Set the age input value
+        });
+    
+        function showhabitform() {
+            document.getElementById("habitform").style.display = "block";
+        }
+    
+        function hidehabitform() {
+            document.getElementById("habitform").style.display = "none";
+        }
+    </script>
+</body>

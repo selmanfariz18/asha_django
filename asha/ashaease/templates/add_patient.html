@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Details</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .form-container {
+            display: block;
+        }
+        .form-container.show {
+            display: block;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        
+
+        /* Styling for the search bar */
+#searchInput {
+    margin-top: 20px;
+    margin-left: 50px;
+    padding: 10px; /* Padding */
+    width: 80%; /* Width */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    background-color: #f2f2f2; /* Background color */
+    box-sizing: border-box; /* Include padding and border in width */
+    outline: none; /* Remove outline on focus */
+}
+
+/* Hover effect (optional) */
+#searchInput:hover {
+    border-color: #aaa; /* Darker border color on hover */
+}
+
+/* Focus effect (optional) */
+#searchInput:focus {
+    border-color: #4CAF50; /* Green border color on focus */
+}
+
+/* Styling for the button */
+.btn {
+   
+    width: 8%;
+    background-color: #4CAF50; /* Green background */
+    border: none; /* No border */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* No underline */
+    display: inline-block; /* Display as inline block */
+    font-size: 16px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor on hover */
+}
+
+/* Hover effect */
+.btn:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+/* Styling for the button */
+.sbtn {
+    background-color: #4CAF50; /* Green background */
+    border: none; /* No border */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* No underline */
+    display: inline-block; /* Display as inline block */
+    font-size: 16px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor on hover */
+}
+
+/* Hover effect */
+.sbtn:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+input[type="text"],
+        button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .checkbox-wrapper {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+        appearance: none; /* Remove default appearance */
+        -webkit-appearance: none; /* Remove default appearance for webkit browsers */
+        -moz-appearance: none; /* Remove default appearance for mozilla browsers */
+    }
+
+    /* Custom styles for dropdown arrow */
+    select::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #666; /* Arrow color */
+    }
+
+    /* Custom styles for dropdown when focused */
+    select:focus {
+        outline: none; /* Remove focus outline */
+        border-color: #007bff; /* Border color when focused */
+    }
+
+    /* Custom styles for dropdown options */
+    select option {
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container">
+            
+            <form id="addForm" class="form-container" method="post" action="add_patient">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="houseNo">House No:</label>
+                    <input type="text" id="houseNo" name="houseNo" placeholder="{{house.house_no}}" value="{{house.house_no}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="ownerName">Full Name:</label>
+                    <select id="age" name="id" required>
+                        <option value="">Name</option>
+                        {% for member in members %}
+                        <option value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <label for="type">Disease Details</label><br>
+                        <textarea id="type" rows="4" cols="50" name="disease_details" required></textarea>
+                <div class="radio-button-container">              
+                    <div>
+                        <label for="pain">Is patient registered on pain and paliative?</label>
+                        <input type="radio" id="painYes" name="pain" value="True" required>
+                        <label for="painYes">Yes</label>
+                        <input type="radio" id="painNo" name="pain" value="False">
+                        <label for="painNo">No</label>
+                    </div>
+                    <div>
+                        <label for="disease">Is treatment are going well?</label>
+                        <input type="radio" id="diseaseYes" name="disease" value="True" required>
+                        <label for="diseaseYes">Yes</label>
+                        <input type="radio" id="diseaseNo" name="disease" value="False">
+                        <label for="diseaseNo">No</label>
+                    </div>             
+                    <button class="sbtn" type="submit">Save</button>
+                    <button class="sbtn"><a href="patient">Close</a></button>
+            </form>
+        </div>
+    </div>
+</body>

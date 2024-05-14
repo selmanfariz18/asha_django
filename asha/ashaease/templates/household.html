@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        /* Add your CSS styles here */
+        /* CSS styles for House Dashboard */
+        
+        .dashboard {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+
+
+        /* CSS styles for Add House Form */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            max-width: 600px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; 
+            max-height: 70vh;
+
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+
+        .member-form {
+            margin-top: 10px;
+        }
+
+        /* CSS styles for House Cards */
+        .house-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .house-card:hover {
+            background-color: #f0f0f0;
+        }
+
+        .dashboard {
+            margin: 20px;
+        }
+        .house-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .house-card:hover {
+            background-color: #f0f0f0;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .member-form {
+            margin-top: 10px;
+        }
+
+        #membernumber {
+        position: relative;
+    }
+
+    #membernumber option {
+        position:static;
+        top: 30px;
+        left: 0;
+        width: 100%;
+    }
+
+
+    .radio-button-container {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Adjust as needed */
+        margin-bottom: 20px;
+    }
+
+    .patient-button {
+        position: relative;
+        left: 400px; /* Pushes the button to the right */
+        bottom: 20px;
+    }
+
+/* Add your CSS styles here */
+
+    /* Custom styles for dropdown lists */
+    select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+        appearance: none; /* Remove default appearance */
+        -webkit-appearance: none; /* Remove default appearance for webkit browsers */
+        -moz-appearance: none; /* Remove default appearance for mozilla browsers */
+    }
+
+    /* Custom styles for dropdown arrow */
+    select::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #666; /* Arrow color */
+    }
+
+    /* Custom styles for dropdown when focused */
+    select:focus {
+        outline: none; /* Remove focus outline */
+        border-color: #007bff; /* Border color when focused */
+    }
+
+    /* Custom styles for dropdown options */
+    select option {
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+    }
+
+   
+   
+
+    #dobInput {
+        padding: 8px;
+        margin-bottom: 10px;
+        width: 97%;
+        box-sizing: border-box; /* Ensures padding and border are included in the width */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    #ageInput {
+        padding: 8px;
+        margin-bottom: 10px;
+        width: 57%;
+        box-sizing: border-box; /* Ensures padding and border are included in the width */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+
+    #dobInput::placeholder, #ageInput::placeholder {
+        color: #999;
+    }
+
+    #dobInput:focus, #ageInput:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    #dobInput:hover, #ageInput:hover {
+        border-color: #007bff;
+    }
+
+    .age {
+        display: flex;
+        align-items: center;
+    }
+
+    .age input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 200px; /* Adjust the width as needed */
+        margin-right: 10px;
+    }
+
+    .age button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: -5px;
+    }
+
+    .age button:hover {
+        background-color: #0056b3;
+    }
+    .btn {
+   
+   width: 8%;
+   background-color: #4CAF50; /* Green background */
+   border: none; /* No border */
+   color: white; /* White text */
+   padding: 10px 20px; /* Padding */
+   text-align: center; /* Center text */
+   text-decoration: none; /* No underline */
+   display: inline-block; /* Display as inline block */
+   font-size: 16px; /* Font size */
+   border-radius: 5px; /* Rounded corners */
+   cursor: pointer; /* Cursor on hover */
+}
+
+/* Hover effect */
+.btn:hover {
+   background-color: #45a049; /* Darker green */
+}
+.card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+
+  
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>House Dashboard</h1>
+        <div style="display: flex;">
+            <a class="btn" href="home" style="margin-right: 10px;">Back</a>
+            <input type="text" id="searchInput" placeholder="Search..." style="margin-right: 10px;">
+            <button id="addHouseButton" onclick="toggleAddHouseForm()">Add House</button>
+            <!-- <button class="btn" onclick="showForm()">Add</button> -->
+        </div>
+        <div id="cardContainer">
+            <!-- Static content: Example cards -->
+            {% for i in house %}
+            <div class="card">
+                <h3>House No: {{ i.house_no }}</h3>
+                <p>Patient Count: {{ i.patients_cound }}</p>
+                {% if i.is_no_of_members_added == False %}
+                <form method="post" action="add_member_request">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{i.id}}">
+                    <button type="submit">Add Members</button>
+                </form>
+                {% endif %}
+                <form method="post" action="house_details">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{i.id}}">
+                    <button type="submit">View Details</button>
+                </form>
+                <p>{% if i.is_child_added == False and i.child_cound != 0 %} <a href="children">child details not added yet!</a> {% endif %}</p>
+                <p>{% if i.is_pregnant_added == False and i.pregnant_cound != 0 %} <a href="pregnant">Pregnant women details not added yet!</a> {% endif %}</p>
+                <p>{% if i.is_patients_added == False and i.patients_cound != 0 %} <a href="patient">Patient details not added yet!</a> {% endif %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="overlay" id="addHouseForm" style="display: none;"> <!-- Add House form -->
+        <div style="width: 50%;" class="form">
+            <span class="close" style="float: right;" onclick="toggleAddHouseForm()">&times;</span> <!-- Close button -->
+            <form method="post" action="house_hold">
+                {% csrf_token %}
+                <h2>Add House</h2>
+                <label for="houseNumber">HouseNumber:</label>
+                <input type="text" id="houseNumber" placeholder="House Number" name="house_no" required>
+                <label for="houseAddress">HouseAddress:</label>
+                <p>
+                    <textarea rows="3" style="width: 580px;" id="houseAddress" placeholder="House Address" name="house_address" required></textarea>
+                </p>            
+                <div class="form-group">
+                    <label for="membernumber">Number of Members:</label>
+                    <input type="number" name="no_of_members" placeholder="">
+                </div>            
+                <!-- <h3>Members</h3>
+                <div id="membersContainer"></div> 
+                <button onclick="addMemberInput()">Add Member</button> Add Member button -->
+                <div class="radio-button-container">
+                    <div>
+                        <label for="pregnant">Is there a pregnant woman in the house?</label>
+                        <input type="radio" id="pregnantYes" name="pregnant_onboard" value="True" onclick="showPregnantForm()">
+                        <label for="pregnantYes">Yes</label>
+                        <input type="radio" id="pregnantNo" name="pregnant_onboard" value="False" onclick="hidePregnantForm()">
+                        <label for="pregnantNo">No</label>
+                    </div>
+                    <div id="pregnantForm" style="display: none;">
+                        <input type="number" name="pregnant_cound" placeholder="Input count here">
+                    </div>                
+                </div>
+                <div class="radio-button-container">
+                    <div>
+                        <label for="patient">Is there any patients in the home?</label>
+                        <input type="radio" id="patientYes" name="patients_onboard" value="True" onclick="showpatientbutton()">
+                        <label for="patientYes">Yes</label>
+                        <input type="radio" id="patientNo" name="patients_onboard" value="False" onclick="hidepatientbutton()">
+                        <label for="patientNo">No</label>
+                    </div>            
+                    <div id="patientbutton" style="display: none;">
+                        <input type="number" name="patients_cound" placeholder="Input count here"> 
+                    </div>
+                </div>   
+                <div class="radio-button-container">
+                    <div>
+                        <label for="patient">Is there any children in the home?</label>
+                        <input type="radio" id="patientYes" name="child_onboard" value="True" onclick="showChildrenForm()">
+                        <label for="patientYes">Yes</label>
+                        <input type="radio" id="patientNo" name="child_onboard" value="False" onclick="hideChildrenForm()">
+                        <label for="patientNo">No</label>
+                    </div>            
+                    <div id="childrenForm" style="display: none;">
+                        <input type="number" name="child_cound" placeholder="Input count here"> 
+                    </div>
+                </div>   
+                <button type="submit">Save House</button> <!-- Save House button -->
+            </form>
+        </div>
+    </div>
+
+    
+    <script>
+        // Array to store house details
+        var houses = [];
+
+        // JavaScript for the functionalities
+        function toggleAddHouseForm() {
+    var addHouseForm = document.getElementById("addHouseForm");
+    if (addHouseForm.style.display === "none") {
+        addHouseForm.style.display = "block";
+    } else {
+        addHouseForm.style.display = "none";
+        clearFormFields(); // Clear form fields when the form is closed
+        document.getElementById("membersContainer").innerHTML = ''; // Clear member input boxes when the form is closed
+        clearSelectedOption() ; // Clear dropdown options when the form is closed
+        restorePlaceholderOption();
+    }
+}
+
+function showhabitform() {
+            document.getElementById("habitform").style.display = "block";
+        }
+
+        function hidehabitform() {
+            document.getElementById("habitform").style.display = "none";
+        }
+
+
+            function showpatientbutton() {
+            document.getElementById("patientbutton").style.display = "block";
+        }
+
+        function hidepatientbutton() {
+            document.getElementById("patientbutton").style.display = "none";
+        }
+
+        function showPregnantForm() {
+            document.getElementById("pregnantForm").style.display = "block";
+        }
+
+        function hidePregnantForm() {
+            document.getElementById("pregnantForm").style.display = "none";
+        }
+
+        function showChildrenForm() {
+            document.getElementById("childrenForm").style.display = "block";
+        }
+
+        function hideChildrenForm() {
+            document.getElementById("childrenForm").style.display = "none";
+        }
+  
+        function saveHouse() {
+            // Get the entered details
+            var houseNumber = document.getElementById("houseNumber").value;
+            var houseAddress = document.getElementById("houseAddress").value;
+            var pregnant = document.querySelector('input[name="pregnant"]:checked').value;
+            var pregnantDetails = null;
+            var children = document.querySelector('input[name="children"]:checked').value;
+            var childrenDetails = null;
+
+            if (pregnant === "yes") {
+                pregnantDetails = {
+                    name: document.getElementById("pregnantName").value,
+                    age: document.getElementById("pregnantAge").value
+                };
+            }
+
+            if (children === "yes") {
+                childrenDetails = {
+                    name: document.getElementById("childName").value,
+                    age: document.getElementById("childAge").value,
+                    vaccinationStatus: document.getElementById("vaccinationStatus").value
+                };
+            }
+
+            // Create a house object
+            var house = {
+                houseNumber: houseNumber,
+                houseAddress: houseAddress,
+                pregnant: pregnant,
+                pregnantDetails: pregnantDetails,
+                children: children,
+                childrenDetails: childrenDetails
+            };
+
+            // Add the house to the array
+            houses.push(house);
+
+            // Update the houses list on the page
+            updateHousesList();
+
+            // Clear the form fields
+            clearFormFields();
+        }
+
+     
+
+
+        
+
+
+        function filterHouses() {
+            var searchBar = document.getElementById("searchBar");
+            var filter = searchBar.value.toUpperCase();
+            var houseCards = document.getElementsByClassName("house-card");
+
+            for (var i = 0; i < houseCards.length; i++) {
+                var houseNumber = houseCards[i].getElementsByTagName("h3")[0];
+                if (houseNumber.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    houseCards[i].style.display = "";
+                } else {
+                    houseCards[i].style.display = "none";
+                }
+            }
+        }
+
+
+
+
+    
+
+
+
+
+
+        function clearFormFields() {
+    // Clear house form fields
+    document.getElementById("houseNumber").value = "";
+    document.getElementById("houseAddress").value = "";
+    document.getElementById("pregnantYes").checked = false;
+    document.getElementById("pregnantNo").checked = false;
+    document.getElementById("pregnantForm").style.display = "none";
+    document.getElementById("pregnantName").value = "";
+    document.getElementById("pregnantAge").value = "";
+    document.getElementById("childrenYes").checked = false;
+    document.getElementById("childrenNo").checked = false;
+    document.getElementById("childrenForm").style.display = "none";
+    document.getElementById("childName").value = "";
+    document.getElementById("childAge").value = "";
+    document.getElementById("vaccinationStatus").value = "";
+
+    // Clear member form fields
+    var membersContainer = document.getElementById("membersContainer");
+    membersContainer.innerHTML = ''; // Clearing the content
+
+    // Add the initial member input
+    addMemberInput();
+}
+
+// Get the select element
+var membernumberSelect = document.getElementById("membernumber");
+
+// Define the range of numbers (e.g., 1 to 100)
+var startNumber = 1;
+var endNumber = 100;
+
+// Populate the dropdown with options
+for (var i = startNumber; i <= endNumber; i++) {
+    var option = document.createElement("option");
+    option.value = i;
+    option.text = i;
+    membernumberSelect.appendChild(option);
+}
+
+function clearSelectedOption() {
+    var memberNumberSelect = document.getElementById("membernumber");
+    memberNumberSelect.selectedIndex = -1; // Clear the selected option
+}
+
+function restorePlaceholderOption() {
+    var memberNumberSelect = document.getElementById("membernumber");
+    var placeholderOption = memberNumberSelect.querySelector('[value=""]');
+    if (!placeholderOption) {
+        // Placeholder option doesn't exist, recreate and add it
+        placeholderOption = document.createElement("option");
+        placeholderOption.value = "";
+        placeholderOption.text = "Select No of Members";
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true;
+        memberNumberSelect.appendChild(placeholderOption);
+    }
+}
+</script>
+</body>
+</html>
