@@ -26,7 +26,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            display: none;
+            display: flex;
             justify-content: center;
             align-items: center;
         }
@@ -38,7 +38,7 @@
             position: relative;
         }
         .form-container {
-            display: none;
+            display: block;
         }
         .form-container.show {
             display: block;
@@ -134,101 +134,88 @@ input[type="text"],
             display: inline-block;
             margin-right: 20px;
         }
+        select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+        appearance: none; /* Remove default appearance */
+        -webkit-appearance: none; /* Remove default appearance for webkit browsers */
+        -moz-appearance: none; /* Remove default appearance for mozilla browsers */
+    }
+
+    /* Custom styles for dropdown arrow */
+    select::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #666; /* Arrow color */
+    }
+
+    /* Custom styles for dropdown when focused */
+    select:focus {
+        outline: none; /* Remove focus outline */
+        border-color: #007bff; /* Border color when focused */
+    }
+
+    /* Custom styles for dropdown options */
+    select option {
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+    }
+
+
     </style>
 </head>
 <body>
-    <div>
-        <a class="btn" href="home">Back</a>
-        <input type="text" id="searchInput" placeholder="Search...">
-
-        <!-- <button class="btn" onclick="showForm()">Add</button> -->
-    </div>
-    <div id="cardContainer">
-        <!-- Static content: Example cards -->
-        {% for i in houses %}
-        <div class="card">
-            <h3>House No: {{ i.house_no }}</h3>
-            <p>Patient Count: {{ i.patients_cound }}</p>
-            <form method="post" action="add_patient_request">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{i.id}}">
-                {% if i.is_patients_added == False %}
-                <button type="submit">Add Details</button>
-                {% endif %}
-            </form>
-            <!-- <p>Owner: John Doe</p> -->
-        </div>
-        {% endfor %}
-    </div>
-
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-container">
             
-            <form id="addForm" class="form-container">
+            <form id="addForm" class="form-container" method="post" action="add_patient">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="houseNo">House No:</label>
-                    <input type="text" id="houseNo" name="houseNo" required>
+                    <input type="text" id="houseNo" name="houseNo" placeholder="{{house.house_no}}" value="{{house.house_no}}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="ownerName">Full Name:</label>
-                    <input type="text" id="ownerName" name="ownerName" required>
+                    <select id="age" name="id" required>
+                        <option value="">Name</option>
+                        {% for member in members %}
+                        <option value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <label for="type">Disease Details</label><br>
-                        <textarea id="type" rows="4" cols="50" ></textarea>
-                <div class="radio-button-container">
-                    
-                        
-                    
+                        <textarea id="type" rows="4" cols="50" name="disease_details" required></textarea>
+                <div class="radio-button-container">              
                     <div>
                         <label for="pain">Is patient registered on pain and paliative?</label>
-                        <input type="radio" id="painYes" name="pain" value="yes" >
+                        <input type="radio" id="painYes" name="pain" value="True" required>
                         <label for="painYes">Yes</label>
-                        <input type="radio" id="painNo" name="pain" value="no" >
+                        <input type="radio" id="painNo" name="pain" value="False">
                         <label for="painNo">No</label>
                     </div>
                     <div>
                         <label for="disease">Is treatment are going well?</label>
-                        <input type="radio" id="diseaseYes" name="disease" value="yes" >
+                        <input type="radio" id="diseaseYes" name="disease" value="True" required>
                         <label for="diseaseYes">Yes</label>
-                        <input type="radio" id="diseaseNo" name="disease" value="no" >
+                        <input type="radio" id="diseaseNo" name="disease" value="False">
                         <label for="diseaseNo">No</label>
-                    </div>
-                
-                
-                
-                
-              
-                <button class="sbtn" type="button" onclick="saveDetails()">Save</button>
-                <button class="sbtn" type="button" onclick="hideForm()">Close</button>
+                    </div>             
+                    <button class="sbtn" type="submit">Save</button>
+                    <button class="sbtn"><a href="patient">Close</a></button>
             </form>
         </div>
     </div>
-
-    <script>
-        let houseDetails = [];
-        const modalOverlay = document.getElementById("modalOverlay");
-
-        function showForm() {
-            modalOverlay.style.display = "flex";
-            document.getElementById("addForm").classList.add("show");
-        }
-
-        function hideForm() {
-            modalOverlay.style.display = "none";
-            document.getElementById("addForm").classList.remove("show");
-        }
-
-        function saveDetails() {
-            let houseNo = document.getElementById("houseNo").value;
-            let ownerName = document.getElementById("ownerName").value;
-
-            houseDetails.push({ houseNo, ownerName });
-            hideForm();
-            renderCards();
-        }
-
-
-
-    </script>
 </body>
-</html>

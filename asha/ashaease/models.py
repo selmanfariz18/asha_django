@@ -128,3 +128,10 @@ class Pregnant(models.Model):
     month10_weight = models.BooleanField(default=False)
     month10_bp = models.BooleanField(default=False)
     month10_hr = models.BooleanField(default=False)
+
+
+class Patient(models.Model):
+    member = models.ForeignKey(Members, on_delete=models.CASCADE)
+    disease_details = models.TextField()
+    pain = models.BooleanField(default=False)
+    disease = models.BooleanField(default=False)

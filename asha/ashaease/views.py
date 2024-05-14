@@ -9,7 +9,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth.decorators import login_required
 from .forms import EventForm
 from django.http import JsonResponse
-from .models import Report,Heading, Questions, House, Members, Children, Pregnant
+from .models import Report,Heading, Questions, House, Members, Children, Pregnant, Patient
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.utils.dateparse import parse_date
@@ -707,4 +707,44 @@ def add_pregnant(request):
         return redirect('pregnant')
 
 def patient(request):
-    return render(request, 'patient.html')
+
+    houses = House.objects.filter(child_onboard=True)
+
+    context = {
+        'houses' : houses,
+    }
+
+    return render(request, 'patient.html', context)
+
+def add_patient_request(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        house = House.objects.get(id=id)
+        members = Members.objects.filter(house=house)
+        return render(request, 'add_patient.html', {'house':house, 'members':members})
+    
+def add_patient(request):
+    if request.method == "POST":
+        member_id = request.POST.get('id')
+        disease_details = request.POST.get('disease_details')
+        pain = bool(request.POST.get('pain'))
+        disease = bool(request.POST.get('disease'))
+
+        member = Members.objects.get(id=member_id)
+
+        patient = Patient(member=member)
+        patient.disease_details = disease_details
+        patient.pain = pain
+        patient.disease = disease
+        patient.save()
+
+        house = House.objects.get(id=member.house.id)
+
+        house.added_patients_cound += 1
+
+        if house.added_patients_cound == house.patients_cound:
+            house.is_patients_added = True
+        
+        house.save()
+
+        return redirect('patient')

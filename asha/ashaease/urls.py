@@ -31,4 +31,6 @@ urlpatterns = [
     path('add_pregnant_request', views.add_pregnant_request, name='add_pregnant_request'),
     path('add_pregnant', views.add_pregnant, name='add_pregnant'),
     path('patient', views.patient, name='patient'),    
+    path('add_patient_request', views.add_patient_request, name='add_patient_request'),    
+    path('add_patient', views.add_patient, name='add_patient'),    
 ]
