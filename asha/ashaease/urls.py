@@ -33,4 +33,8 @@ urlpatterns = [
     path('patient', views.patient, name='patient'),    
     path('add_patient_request', views.add_patient_request, name='add_patient_request'),    
     path('add_patient', views.add_patient, name='add_patient'),    
+    path('edit_household', views.edit_household, name='edit_household'),
+    path('edit_pregnant', views.edit_pregnant, name='edit_pregnant'),
+    path('edit_patient', views.edit_patient, name='edit_patient'),
+    path('edit_children', views.edit_children, name='edit_children'),
 ]

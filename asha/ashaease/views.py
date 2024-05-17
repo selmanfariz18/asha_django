@@ -614,7 +614,11 @@ def add_children(request):
 
         member = Members.objects.get(id=member_id)
 
-        child = Children(member=member)
+        # child = Children(member=member)
+        try:
+            child = Children.objects.get(member=member)
+        except Children.DoesNotExist:
+            child = Children(member=member)
         child.delivery = delivery
         child.threemonth = threemonth
         child.sixmonth = sixmonth
@@ -662,7 +666,13 @@ def add_pregnant(request):
 
         member = Members.objects.get(id=member_id)
 
-        pregnant = Pregnant(member=member)
+        # pregnant = Pregnant(member=member)
+
+        try:
+            pregnant = Pregnant.objects.get(member=member)
+        except Pregnant.DoesNotExist:
+            pregnant = Pregnant(member=member)
+
         pregnant.pregnancy_months = pregnancyMonths
         pregnant.month1_weight = bool(request.POST.get('month1_weight'))
         pregnant.month1_bp = bool(request.POST.get('month1_bp'))
@@ -734,7 +744,11 @@ def add_patient(request):
 
         member = Members.objects.get(id=member_id)
 
-        patient = Patient(member=member)
+        # patient = Patient(member=member)
+        try:
+            patient = Patient.objects.get(member=member)
+        except Patient.DoesNotExist:
+            patient = Patient(member=member)
         patient.disease_details = disease_details
         patient.pain = pain
         patient.disease = disease
@@ -750,3 +764,61 @@ def add_patient(request):
         house.save()
 
         return redirect('patient')
+    
+
+def edit_household(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        section = request.POST.get('section')    
+
+        request.session['household_id'] = {
+            'id': id,
+        }
+
+        if section == 'pregnant':
+            return redirect('edit_pregnant')
+
+        elif section == 'patient':
+            return redirect('edit_patient')
+
+        elif section == 'children':
+            return redirect('edit_children')
+
+        else:
+            pass
+
+
+def edit_pregnant(request):
+
+    house_mem_id = request.session.pop('household_id', None)
+    if house_mem_id:
+            # Extract data
+        id = house_mem_id.get('id')
+
+    pregnant = Pregnant.objects.get(id=id)
+
+    context = {
+        'pregnant' : pregnant,
+    }
+
+    return render(request, 'edit_pregnant.html', context)
+
+def edit_patient(request):
+
+    house_mem_id = request.session.pop('household_id', None)
+    if house_mem_id:
+            # Extract data
+        id = house_mem_id.get('id')
+        patient = Patient.objects.get(id=id)
+
+    return render(request, 'edit_patient.html', {'patient':patient})
+
+def edit_children(request):
+
+    house_mem_id = request.session.pop('household_id', None)
+    if house_mem_id:
+            # Extract data
+        id = house_mem_id.get('id')
+        child = Children.objects.get(id=id)
+
+    return render(request, 'edit_children.html', {'child':child})
