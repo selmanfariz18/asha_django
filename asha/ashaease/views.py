@@ -177,9 +177,18 @@ def calendar(request):
     else:
         form = EventForm()
 
-    today = datetime.date.today()
-    events = Event.objects.filter(user=request.user, event_date__year=today.year, event_date__month=today.month)
+    # today = datetime.date.today()
+    # events = Event.objects.filter(user=request.user, event_date__year=today.year, event_date__month=today.month)
+    events = Event.objects.filter(user=request.user,).order_by('-event_date')
     return render(request, 'calendar.html', {'form': form, 'events': events})
+
+def delete_event(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        event = get_object_or_404(Event, id=id)
+        event.delete()
+        return HttpResponseRedirect(reverse("calendar"))
+
 
 @login_required
 def get_events(request, year, month):
@@ -488,6 +497,18 @@ def house_hold(request):
 
     return render(request, 'household.html', context)
 
+def search_house_hold(request):
+    if request.method == "POST":
+        house_no = request.POST.get('house_no')       
+
+        house = House.objects.filter(user=request.user, house_no=house_no )
+
+        context = {
+            'house' : house
+        }
+
+        return render(request, 'search_household.html', context)
+
 def add_member_request(request):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -720,7 +741,8 @@ def add_pregnant(request):
 
 def patient(request):
 
-    houses = House.objects.filter(child_onboard=True)
+
+    houses = House.objects.filter(user=request.user,child_onboard=True)
 
     context = {
         'houses' : houses,
