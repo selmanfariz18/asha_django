@@ -614,7 +614,11 @@ def add_children(request):
 
         member = Members.objects.get(id=member_id)
 
-        child = Children(member=member)
+        # child = Children(member=member)
+        try:
+            child = Children.objects.get(member=member)
+        except Children.DoesNotExist:
+            child = Children(member=member)
         child.delivery = delivery
         child.threemonth = threemonth
         child.sixmonth = sixmonth
@@ -740,7 +744,11 @@ def add_patient(request):
 
         member = Members.objects.get(id=member_id)
 
-        patient = Patient(member=member)
+        # patient = Patient(member=member)
+        try:
+            patient = Patient.objects.get(member=member)
+        except Patient.DoesNotExist:
+            patient = Patient(member=member)
         patient.disease_details = disease_details
         patient.pain = pain
         patient.disease = disease
@@ -801,8 +809,9 @@ def edit_patient(request):
     if house_mem_id:
             # Extract data
         id = house_mem_id.get('id')
+        patient = Patient.objects.get(id=id)
 
-    return render(request, 'edit_patient.html')
+    return render(request, 'edit_patient.html', {'patient':patient})
 
 def edit_children(request):
 

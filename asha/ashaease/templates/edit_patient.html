@@ -185,35 +185,35 @@ input[type="text"],
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="houseNo">House No:</label>
-                    <input type="text" id="houseNo" name="houseNo" placeholder="{{house.house_no}}" value="{{house.house_no}}" readonly>
+                    <input type="text" id="houseNo" name="houseNo" placeholder="{{patient.member.house.house_no}}" value="{{patient.member.house.house_no}}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="ownerName">Full Name:</label>
                     <select id="age" name="id" required>
-                        <option value="">Name</option>
-                        {% for member in members %}
-                        <option value="{{member.id}}">{{member.name}}</option>
-                        {% endfor %}
+                        
+                       
+                        <option value="{{patient.member.id}}">{{patient.member.name}}</option>
+                       
                     </select>
                 </div>
                 <label for="type">Disease Details</label><br>
-                        <textarea id="type" rows="4" cols="50" name="disease_details" required></textarea>
+                        <textarea id="type" rows="4" cols="50" name="disease_details">{{patient.disease_details}}</textarea>
                 <div class="radio-button-container">              
                     <div>
                         <label for="pain">Is patient registered on pain and paliative?</label>
-                        <input type="radio" id="painYes" name="pain" value="True" required>
+                        <input type="radio" id="painYes" name="pain" value="True" {% if patient.pain == True %}checked{% endif %} required>
                         <label for="painYes">Yes</label>
-                        <input type="radio" id="painNo" name="pain" value="False">
+                        <input type="radio" id="painNo" name="pain" value="False" {% if patient.pain == False %}checked{% endif %}>
                         <label for="painNo">No</label>
                     </div>
                     <div>
                         <label for="disease">Is treatment are going well?</label>
-                        <input type="radio" id="diseaseYes" name="disease" value="True" required>
+                        <input type="radio" id="diseaseYes" name="disease" value="True" {% if patient.disease == True %}checked{% endif %} required>
                         <label for="diseaseYes">Yes</label>
-                        <input type="radio" id="diseaseNo" name="disease" value="False">
+                        <input type="radio" id="diseaseNo" name="disease" value="False" {% if patient.disease == False %}checked{% endif %}>
                         <label for="diseaseNo">No</label>
                     </div>             
-                    <button class="sbtn" type="submit">Save</button>
+                    <button class="sbtn" type="submit">Save Changes</button>
                     <button class="sbtn"><a href="patient">Close</a></button>
             </form>
         </div>
