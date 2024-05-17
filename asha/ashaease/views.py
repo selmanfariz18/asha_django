@@ -750,3 +750,59 @@ def add_patient(request):
         house.save()
 
         return redirect('patient')
+    
+
+def edit_household(request):
+    if request.method == "POST":
+        id = request.POST.get('id')
+        section = request.POST.get('section')    
+
+        request.session['household_id'] = {
+            'id': id,
+        }
+
+        if section == 'pregnant':
+            return redirect('edit_pregnant')
+
+        elif section == 'patient':
+            return redirect('edit_patient')
+
+        elif section == 'children':
+            return redirect('edit_children')
+
+        else:
+            pass
+
+
+def edit_pregnant(request):
+
+    house_mem_id = request.session.pop('household_id', None)
+    if house_mem_id:
+            # Extract data
+        id = house_mem_id.get('id')
+
+    pregnant = Pregnant.objects.get(id=id)
+
+    context = {
+        'pregnant' : pregnant,
+    }
+
+    return render(request, 'edit_pregnant.html', context)
+
+def edit_patient(request):
+
+    house_mem_id = request.session.pop('household_id', None)
+    if house_mem_id:
+            # Extract data
+        id = house_mem_id.get('id')
+
+    return render(request, 'edit_patient.html')
+
+def edit_children(request):
+
+    house_mem_id = request.session.pop('household_id', None)
+    if house_mem_id:
+            # Extract data
+        id = house_mem_id.get('id')
+
+    return render(request, 'edit_children.html')

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <style>
+       
+        
+        .dashboard {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+
+
+        /* CSS styles for Add House Form */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            max-width: 600px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; 
+            max-height: 70vh;
+
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+
+        .member-form {
+            margin-top: 10px;
+        }
+
+        /* CSS styles for House Cards */
+        .house-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .house-card:hover {
+            background-color: #f0f0f0;
+        }
+
+        .dashboard {
+            margin: 20px;
+        }
+        .house-card {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .house-card:hover {
+            background-color: #f0f0f0;
+        }
+        .modal-body {
+            padding: 20px;
+        }
+        .member-form {
+            margin-top: 10px;
+        }
+
+        #membernumber {
+        position: relative;
+    }
+
+    #membernumber option {
+        position:static;
+        top: 30px;
+        left: 0;
+        width: 100%;
+    }
+
+
+    .radio-button-container {
+        display: flex;
+        align-items: center;
+        gap: 20px; /* Adjust as needed */
+        margin-bottom: 20px;
+    }
+
+    .patient-button {
+        position: relative;
+        left: 400px; /* Pushes the button to the right */
+        bottom: 20px;
+    }
+
+/* Add your CSS styles here */
+
+    /* Custom styles for dropdown lists */
+    select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+        appearance: none; /* Remove default appearance */
+        -webkit-appearance: none; /* Remove default appearance for webkit browsers */
+        -moz-appearance: none; /* Remove default appearance for mozilla browsers */
+    }
+
+    /* Custom styles for dropdown arrow */
+    select::after {
+        content: '\25BC'; /* Unicode character for down arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #666; /* Arrow color */
+    }
+
+    /* Custom styles for dropdown when focused */
+    select:focus {
+        outline: none; /* Remove focus outline */
+        border-color: #007bff; /* Border color when focused */
+    }
+
+    /* Custom styles for dropdown options */
+    select option {
+        background-color: #fff; /* Background color */
+        color: #333; /* Text color */
+        font-size: 16px; /* Font size */
+        font-family: Arial, sans-serif; /* Font family */
+    }
+
+   
+   
+
+    #dobInput {
+        padding: 8px;
+        margin-bottom: 10px;
+        width: 97%;
+        box-sizing: border-box; /* Ensures padding and border are included in the width */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    
+    #ageInput {
+        padding: 8px;
+        margin-bottom: 10px;
+        width: 57%;
+        box-sizing: border-box; /* Ensures padding and border are included in the width */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+
+    #dobInput::placeholder, #ageInput::placeholder {
+        color: #999;
+    }
+
+    #dobInput:focus, #ageInput:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+    #dobInput:hover, #ageInput:hover {
+        border-color: #007bff;
+    }
+
+    .age {
+        display: flex;
+        align-items: center;
+    }
+
+    .age input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 200px; /* Adjust the width as needed */
+        margin-right: 10px;
+    }
+
+    .age button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: -5px;
+    }
+
+    .age button:hover {
+        background-color: #0056b3;
+    }
+
+
+  
+    </style>
+</head>
+<body>
+
+    <div id="addHouseForm"> <!-- Add House form -->
+        <div style="width: 50%;" class="form">
+           
+            <form id="addForm" class="form-container" method="post" action="add_children">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="houseNo">House No:</label>
+                    <input type="text" id="houseNo" name="houseNo" placeholder="{{house.house_no}}" value="{{house.house_no}}" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="ownerName">Full Name:</label>
+                    <select id="age" name="id" required>
+                        <option value="">Name</option>
+                        {% for member in members %}
+                        <option value="{{member.id}}">{{member.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+ 
+                <!-- <div class="form-group">
+                    <label for="age">Age:</label>
+                    <select id="age" name="age">
+                        <option value="0">Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                </div> -->
+                
+                
+                <div id="checkboxesContainer" class="form-group">
+                    <label>Vaccination Status:</label><br>
+                    <!-- 10 sets of checkboxes -->
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="deliveryCheck" value="True" name="delivery">
+                        <label for="deliveryCheck">Delivery</label>
+                    </div>
+                
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="3monthsCheck" value="True" name="threemonth">
+                        <label for="3monthsCheck">3 months</label>
+                    </div>
+                
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="6monthsCheck" value="True" name="sixmonth">
+                        <label for="6monthsCheck">6 months</label>
+                    </div>
+                
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="1yearCheck" value="True" name="oneyear">
+                        <label for="1yearCheck">1 year</label>
+                    </div>
+                
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="5yearCheck" value="True" name="fiveyear">
+                        <label for="5yearCheck">5 years</label>
+                    </div>
+                
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="10yearCheck" value="True" name="tenyear">
+                        <label for="10yearCheck">10 years</label>
+                    </div>
+                
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="15yearCheck" value="True" name="fifteenyear">
+                        <label for="15yearCheck">15 years</label>
+                    </div>
+                
+                </div>
+                <textarea id="notificationArea" rows="4" cols="50" name="reason" placeholder="Reason for any vaccination delay"></textarea>
+                <button class="sbtn" type="submit">Save</button>
+                <button class="sbtn"><a href="children">Close</a></button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
