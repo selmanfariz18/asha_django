@@ -819,5 +819,6 @@ def edit_children(request):
     if house_mem_id:
             # Extract data
         id = house_mem_id.get('id')
+        child = Children.objects.get(id=id)
 
-    return render(request, 'edit_children.html')
+    return render(request, 'edit_children.html', {'child':child})

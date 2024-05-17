@@ -258,15 +258,14 @@
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="houseNo">House No:</label>
-                    <input type="text" id="houseNo" name="houseNo" placeholder="{{house.house_no}}" value="{{house.house_no}}" readonly>
+                    <input type="text" id="houseNo" name="houseNo" placeholder="{{child.member.house.house_no}}" value="{{child.member.house.house_no}}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="ownerName">Full Name:</label>
                     <select id="age" name="id" required>
-                        <option value="">Name</option>
-                        {% for member in members %}
-                        <option value="{{member.id}}">{{member.name}}</option>
-                        {% endfor %}
+                        
+                        <option value="{{child.member.id}}">{{child.member.name}}</option>
+                        
                     </select>
                 </div>
  
@@ -297,43 +296,43 @@
                     <label>Vaccination Status:</label><br>
                     <!-- 10 sets of checkboxes -->
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="deliveryCheck" value="True" name="delivery">
+                        <input type="checkbox" id="deliveryCheck" value="True" name="delivery" {% if child.delivery == True %}checked{% endif %}>
                         <label for="deliveryCheck">Delivery</label>
                     </div>
                 
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="3monthsCheck" value="True" name="threemonth">
+                        <input type="checkbox" id="3monthsCheck" value="True" name="threemonth" {% if child.threemonth == True %}checked{% endif %}>
                         <label for="3monthsCheck">3 months</label>
                     </div>
                 
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="6monthsCheck" value="True" name="sixmonth">
+                        <input type="checkbox" id="6monthsCheck" value="True" name="sixmonth" {% if child.sixmonth == True %}checked{% endif %}>
                         <label for="6monthsCheck">6 months</label>
                     </div>
                 
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="1yearCheck" value="True" name="oneyear">
+                        <input type="checkbox" id="1yearCheck" value="True" name="oneyear" {% if child.oneyear == True %}checked{% endif %}>
                         <label for="1yearCheck">1 year</label>
                     </div>
                 
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="5yearCheck" value="True" name="fiveyear">
+                        <input type="checkbox" id="5yearCheck" value="True" name="fiveyear" {% if child.fiveyear == True %}checked{% endif %}>
                         <label for="5yearCheck">5 years</label>
                     </div>
                 
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="10yearCheck" value="True" name="tenyear">
+                        <input type="checkbox" id="10yearCheck" value="True" name="tenyear" {% if child.tenyear == True %}checked{% endif %}>
                         <label for="10yearCheck">10 years</label>
                     </div>
                 
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" id="15yearCheck" value="True" name="fifteenyear">
+                        <input type="checkbox" id="15yearCheck" value="True" name="fifteenyear" {% if child.fifteenyear == True %}checked{% endif %}>
                         <label for="15yearCheck">15 years</label>
                     </div>
                 
                 </div>
-                <textarea id="notificationArea" rows="4" cols="50" name="reason" placeholder="Reason for any vaccination delay"></textarea>
-                <button class="sbtn" type="submit">Save</button>
+                <textarea id="notificationArea" rows="4" cols="50" name="reason" placeholder="Reason for any vaccination delay">{{ child.reason }}</textarea>
+                <button class="sbtn" type="submit">Save Changes</button>
                 <button class="sbtn"><a href="children">Close</a></button>
             </form>
         </div>
