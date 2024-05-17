@@ -488,6 +488,18 @@ def house_hold(request):
 
     return render(request, 'household.html', context)
 
+def search_house_hold(request):
+    if request.method == "POST":
+        house_no = request.POST.get('house_no')       
+
+        house = House.objects.filter(user=request.user, house_no=house_no )
+
+        context = {
+            'house' : house
+        }
+
+        return render(request, 'search_household.html', context)
+
 def add_member_request(request):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -720,7 +732,8 @@ def add_pregnant(request):
 
 def patient(request):
 
-    houses = House.objects.filter(child_onboard=True)
+
+    houses = House.objects.filter(user=request.user,child_onboard=True)
 
     context = {
         'houses' : houses,
