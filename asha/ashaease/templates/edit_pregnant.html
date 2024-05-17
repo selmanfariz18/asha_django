@@ -189,7 +189,7 @@ input[type="text"],
                 <div class="form-group">
                     <label for="ownerName">Full Name:</label>
                     <select id="age" name="id" required>                        
-                        <option value="{{pregnant.id}}">{{pregnant.member.name}}</option>                        
+                        <option value="{{pregnant.member.id}}">{{pregnant.member.name}}</option>                        
                     </select>
                 </div>
 
@@ -214,157 +214,157 @@ input[type="text"],
                     <label>Month 1:</label>
                     <!-- 10 sets of checkboxes -->
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" name="month1_weight" id="weightCheck_0" value="True">
+                        <input type="checkbox" name="month1_weight" id="weightCheck_0" value="True" {% if pregnant.month1_weight == True %}checked{% endif %}>
                         <label for="weightCheck_0">Weight</label><br>
                     </div>
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" name="month1_bp" id="bpCheck_0" value="True">
+                        <input type="checkbox" name="month1_bp" id="bpCheck_0" value="True" {% if pregnant.month1_bp == True %}checked{% endif %}>
                         <label for="bpCheck_0">BP</label><br>
                     </div>
                     <div class="checkbox-wrapper">
-                        <input type="checkbox" name="month1_hr" id="hpCheck_0" value="True">
+                        <input type="checkbox" name="month1_hr" id="hpCheck_0" value="True" {% if pregnant.month1_hr == True %}checked{% endif %}>
                         <label for="hpCheck_0">HR</label><br>
                     </div>
                     <div id="checkboxesContainer" class="form-group">
                         <label>Month 2:</label>
                         <!-- 10 sets of checkboxes -->
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" name="month2_weight" id="weightCheck_0" value="True">
+                            <input type="checkbox" name="month2_weight" id="weightCheck_0" value="True" {% if pregnant.month2_weight == True %}checked{% endif %}>
                             <label for="weightCheck_0">Weight</label><br>
                         </div>
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" name="month2_bp" id="bpCheck_0" value="True">
+                            <input type="checkbox" name="month2_bp" id="bpCheck_0" value="True" {% if pregnant.month2_bp == True %}checked{% endif %}>
                             <label for="bpCheck_0">BP</label><br>
                         </div>
                         <div class="checkbox-wrapper">
-                            <input type="checkbox" name="month2_hr" id="hpCheck_0" value="True">
+                            <input type="checkbox" name="month2_hr" id="hpCheck_0" value="True" {% if pregnant.month2_hr == True %}checked{% endif %}>
                             <label for="hpCheck_0">HR</label><br>
                         </div>
                         <div id="checkboxesContainer" class="form-group">
                             <label>Month 3:</label>
                             <!-- 10 sets of checkboxes -->
                             <div class="checkbox-wrapper">
-                                <input type="checkbox" name="month3_weight" id="weightCheck_0" value="True">
+                                <input type="checkbox" name="month3_weight" id="weightCheck_0" value="True" {% if pregnant.month3_weight == True %}checked{% endif %}>
                                 <label for="weightCheck_0">Weight</label><br>
                             </div>
                             <div class="checkbox-wrapper">
-                                <input type="checkbox" name="month3_bp" id="bpCheck_0" value="True">
+                                <input type="checkbox" name="month3_bp" id="bpCheck_0" value="True" {% if pregnant.month3_bp == True %}checked{% endif %}>
                                 <label for="bpCheck_0">BP</label><br>
                             </div>
                             <div class="checkbox-wrapper">
-                                <input type="checkbox" name="month3_hr" id="hpCheck_0" value="True">
+                                <input type="checkbox" name="month3_hr" id="hpCheck_0" value="True" {% if pregnant.month3_hr == True %}checked{% endif %}>
                                 <label for="hpCheck_0">HR</label><br>
                             </div>
                             <div id="checkboxesContainer" class="form-group">
                                 <label>Month 4:</label>
                                 <!-- 10 sets of checkboxes -->
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" name="month4_weight" id="weightCheck_0" value="True">
+                                    <input type="checkbox" name="month4_weight" id="weightCheck_0" value="True" {% if pregnant.month4_weight == True %}checked{% endif %}>
                                     <label for="weightCheck_0">Weight</label><br>
                                 </div>
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" name="month4_bp" id="bpCheck_0" value="True">
+                                    <input type="checkbox" name="month4_bp" id="bpCheck_0" value="True" {% if pregnant.month4_bp == True %}checked{% endif %}>
                                     <label for="bpCheck_0">BP</label><br>
                                 </div>
                                 <div class="checkbox-wrapper">
-                                    <input type="checkbox" name="month4_hr" id="hpCheck_0" value="True">
+                                    <input type="checkbox" name="month4_hr" id="hpCheck_0" value="True" {% if pregnant.month4_hr == True %}checked{% endif %}>
                                     <label for="hpCheck_0">HR</label><br>
                                 </div>
                                 <div id="checkboxesContainer" class="form-group">
                                     <label>Month 5:</label>
                                     <!-- 10 sets of checkboxes -->
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" name="month5_weight" id="weightCheck_0" value="True">
+                                        <input type="checkbox" name="month5_weight" id="weightCheck_0" value="True" {% if pregnant.month5_weight == True %}checked{% endif %}>
                                         <label for="weightCheck_0">Weight</label><br>
                                     </div>
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" name="month5_bp" id="bpCheck_0" value="True">
+                                        <input type="checkbox" name="month5_bp" id="bpCheck_0" value="True" {% if pregnant.month5_bp == True %}checked{% endif %}>
                                         <label for="bpCheck_0">BP</label><br>
                                     </div>
                                     <div class="checkbox-wrapper">
-                                        <input type="checkbox" name="month5_hr" id="hpCheck_0" value="True">
+                                        <input type="checkbox" name="month5_hr" id="hpCheck_0" value="True" {% if pregnant.month5_hr == True %}checked{% endif %}>
                                         <label for="hpCheck_0">HR</label><br>
                                     </div>
                                     <div id="checkboxesContainer" class="form-group">
                                         <label>Month 6:</label>
                                         <!-- 10 sets of checkboxes -->
                                         <div class="checkbox-wrapper">
-                                            <input type="checkbox" name="month6_weight" id="weightCheck_0" value="True">
+                                            <input type="checkbox" name="month6_weight" id="weightCheck_0" value="True" {% if pregnant.month6_weight == True %}checked{% endif %}>
                                             <label for="weightCheck_0">Weight</label><br>
                                         </div>
                                         <div class="checkbox-wrapper">
-                                            <input type="checkbox" name="month6_bp" id="bpCheck_0" value="True">
+                                            <input type="checkbox" name="month6_bp" id="bpCheck_0" value="True" {% if pregnant.month6_bp == True %}checked{% endif %}>
                                             <label for="bpCheck_0">BP</label><br>
                                         </div>
                                         <div class="checkbox-wrapper">
-                                            <input type="checkbox" name="month6_hr" id="hpCheck_0" value="True">
+                                            <input type="checkbox" name="month6_hr" id="hpCheck_0" value="True" {% if pregnant.month6_hr == True %}checked{% endif %}>
                                             <label for="hpCheck_0">HR</label><br>
                                         </div>
                                         <div id="checkboxesContainer" class="form-group">
                                             <label>Month 7:</label>
                                             <!-- 10 sets of checkboxes -->
                                             <div class="checkbox-wrapper">
-                                                <input type="checkbox" name="month7_weight" id="weightCheck_0" value="True">
+                                                <input type="checkbox" name="month7_weight" id="weightCheck_0" value="True" {% if pregnant.month7_weight == True %}checked{% endif %}>
                                                 <label for="weightCheck_0">Weight</label><br>
                                             </div>
                                             <div class="checkbox-wrapper">
-                                                <input type="checkbox" name="month7_bp" id="bpCheck_0" value="True">
+                                                <input type="checkbox" name="month7_bp" id="bpCheck_0" value="True" {% if pregnant.month7_bp == True %}checked{% endif %}>
                                                 <label for="bpCheck_0">BP</label><br>
                                             </div>
                                             <div class="checkbox-wrapper">
-                                                <input type="checkbox" name="month_hr" id="hpCheck_0" value="True">
+                                                <input type="checkbox" name="month_hr" id="hpCheck_0" value="True" {% if pregnant.month7_hr == True %}checked{% endif %}>
                                                 <label for="hpCheck_0">HR</label><br>
                                             </div>
                                             <div id="checkboxesContainer" class="form-group">
                                                 <label>Month 8:</label>
                                                 <!-- 10 sets of checkboxes -->
                                                 <div class="checkbox-wrapper">
-                                                    <input type="checkbox" name="month8_weight" id="weightCheck_0" value="True">
+                                                    <input type="checkbox" name="month8_weight" id="weightCheck_0" value="True" {% if pregnant.month8_weight == True %}checked{% endif %}>
                                                     <label for="weightCheck_0">Weight</label><br>
                                                 </div>
                                                 <div class="checkbox-wrapper">
-                                                    <input type="checkbox" name="month8_bp" id="bpCheck_0" value="True">
+                                                    <input type="checkbox" name="month8_bp" id="bpCheck_0" value="True" {% if pregnant.month8_bp == True %}checked{% endif %}>
                                                     <label for="bpCheck_0">BP</label><br>
                                                 </div>
                                                 <div class="checkbox-wrapper">
-                                                    <input type="checkbox" name="month8_hr" id="hpCheck_0" value="True">
+                                                    <input type="checkbox" name="month8_hr" id="hpCheck_0" value="True" {% if pregnant.month8_hr == True %}checked{% endif %}>
                                                     <label for="hpCheck_0">HR</label><br>
                                                 </div>
                                                 <div id="checkboxesContainer" class="form-group">
                                                     <label>Month 9:</label>
                                                     <!-- 10 sets of checkboxes -->
                                                     <div class="checkbox-wrapper">
-                                                        <input type="checkbox" name="month9_weight" id="weightCheck_0" value="True">
+                                                        <input type="checkbox" name="month9_weight" id="weightCheck_0" value="True" {% if pregnant.month9_weight == True %}checked{% endif %}>
                                                         <label for="weightCheck_0">Weight</label><br>
                                                     </div>
                                                     <div class="checkbox-wrapper">
-                                                        <input type="checkbox" name="month9_bp" id="bpCheck_0" value="True">
+                                                        <input type="checkbox" name="month9_bp" id="bpCheck_0" value="True" {% if pregnant.month9_bp == True %}checked{% endif %}>
                                                         <label for="bpCheck_0">BP</label><br>
                                                     </div>
                                                     <div class="checkbox-wrapper">
-                                                        <input type="checkbox" name="month9_hr" id="hpCheck_0" value="True">
+                                                        <input type="checkbox" name="month9_hr" id="hpCheck_0" value="True" {% if pregnant.month9_hr == True %}checked{% endif %}>
                                                         <label for="hpCheck_0">HR</label><br>
                                                     </div>
                                                     <div id="checkboxesContainer" class="form-group">
                                                         <label>Month 10:</label>
                                                         <!-- 10 sets of checkboxes -->
                                                         <div class="checkbox-wrapper">
-                                                            <input type="checkbox" name="month10_weight" id="weightCheck_0" value="True">
+                                                            <input type="checkbox" name="month10_weight" id="weightCheck_0" value="True" {% if pregnant.month10_weight == True %}checked{% endif %}>
                                                             <label for="weightCheck_0">Weight</label><br>
                                                         </div>
                                                         <div class="checkbox-wrapper">
-                                                            <input type="checkbox" name="month10_bp" id="bpCheck_0" value="True">
+                                                            <input type="checkbox" name="month10_bp" id="bpCheck_0" value="True" {% if pregnant.month10_bp == True %}checked{% endif %}>
                                                             <label for="bpCheck_0">BP</label><br>
                                                         </div>
                                                         <div class="checkbox-wrapper">
-                                                            <input type="checkbox" name="month10_hr" id="hpCheck_0" value="True">
+                                                            <input type="checkbox" name="month10_hr" id="hpCheck_0" value="True" {% if pregnant.month10_hr == True %}checked{% endif %}>
                                                             <label for="hpCheck_0">HR</label><br>
                                                         </div>
                     <!-- Repeat above div for 9 more times -->
                     <!-- Feel free to adjust the ids of checkboxes as per your requirement -->
                 </div>
-                <button class="sbtn" type="submit">Save</button>
-                <button class="sbtn"><a href="home">Close</a></button>
+                <button class="sbtn" type="submit">Save Changes</button>
+                <button class="sbtn"><a href="house_hold">Close</a></button>
             </form>
         </div>
     </div>

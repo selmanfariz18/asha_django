@@ -662,7 +662,13 @@ def add_pregnant(request):
 
         member = Members.objects.get(id=member_id)
 
-        pregnant = Pregnant(member=member)
+        # pregnant = Pregnant(member=member)
+
+        try:
+            pregnant = Pregnant.objects.get(member=member)
+        except Pregnant.DoesNotExist:
+            pregnant = Pregnant(member=member)
+
         pregnant.pregnancy_months = pregnancyMonths
         pregnant.month1_weight = bool(request.POST.get('month1_weight'))
         pregnant.month1_bp = bool(request.POST.get('month1_bp'))
