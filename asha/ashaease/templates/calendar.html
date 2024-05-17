@@ -94,8 +94,13 @@
   </div>
   <div id="events-container" class="event-list">
     {% for event in events %}
-    <div class="event-list " id="event-list" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; background-color: #f8f9fa;">
+    <div class="event-list " id="event-list" style="display: flex ;padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; background-color: #f8f9fa;">
       {{ event.title }} - Date: {{ event.event_date }} - From: {{ event.start_time }} To: {{ event.end_time }}
+      <form method="post" action="{% url 'delete_event' %}">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{event.id}}">
+        <button type="submit">Delete</button>
+      </form>
     </div>
     {% endfor %}
   </div>

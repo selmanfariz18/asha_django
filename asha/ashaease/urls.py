@@ -13,6 +13,7 @@ urlpatterns = [
     path('calendar/', views.calendar, name="calendar"),
     path('events/<int:year>/<int:month>/<int:day>/', views.get_events_by_day, name='get_events_by_day'),  
     path('events/<int:year>/<int:month>/', views.get_events, name='get_events'),  
+    path('delete_event', views.delete_event, name='delete_event'),
     path('edit/<int:event_id>/', views.edit_event, name='edit_event'),
     path('notification', views.notification, name="notification"),
     path('report/', views.report, name='report'),

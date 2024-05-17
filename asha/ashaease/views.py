@@ -177,9 +177,18 @@ def calendar(request):
     else:
         form = EventForm()
 
-    today = datetime.date.today()
-    events = Event.objects.filter(user=request.user, event_date__year=today.year, event_date__month=today.month)
+    # today = datetime.date.today()
+    # events = Event.objects.filter(user=request.user, event_date__year=today.year, event_date__month=today.month)
+    events = Event.objects.filter(user=request.user,).order_by('-event_date')
     return render(request, 'calendar.html', {'form': form, 'events': events})
+
+def delete_event(request):
+    if request.method == 'POST':
+        id = request.POST['id']
+        event = get_object_or_404(Event, id=id)
+        event.delete()
+        return HttpResponseRedirect(reverse("calendar"))
+
 
 @login_required
 def get_events(request, year, month):
