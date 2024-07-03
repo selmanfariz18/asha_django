@@ -86,7 +86,7 @@
             <tbody id="table-body">
                 {% for head in heading %}
                 <tr class="heading-row">
-                    <td>{{ forloop.counter }}</td>
+                    <td>1</td>
                     <td class="editable-input placeholder-text">
                         {{head.heading}}
                     </td>
@@ -145,53 +145,25 @@
                 </form>
             </tbody>
         </table>
-        <!-- <button type="button" onclick="addHeading()">Add Heading</button>
-        <button type="button" onclick="addQuestion()">Add Question</button> -->
-        <!-- <button type="submit">Save Data</button> -->
         </div>
-    <button id="download-report">Download Report</button>
+    <button onclick="downloadReport()">Download Report</button>
     
  
-
-<!-- // Function to download the report in PDF format -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-    document.getElementById("download-report").addEventListener("click", () => {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-
-        const reportName = "{{ reports.name }}";
-        const reportDate = "{{ reports.date|date:'Y-m-d' }}";
-
-        // Add report name and date at the top
-        doc.text(`Report Name: ${reportName}`, 10, 10);
-        doc.text(`Report Date: ${reportDate}`, 10, 20);
-
-        // Fetch the table content
-        const reportContent = generateReportContent();
-        const lines = reportContent.split("<br>").map((line) => line.trim());
-        let y = 30;
-        lines.forEach((line) => {
-            const splitText = doc.splitTextToSize(line, 180);
-            doc.text(splitText, 10, y);
-            y += splitText.length * 10;
+    <script>
+function downloadReport() {
+    var data = JSON.parse(localStorage.getItem('reportData'));
+    if (data) {
+        var doc = new jsPDF();
+        doc.autoTable({
+            head: [['Sl. No.', 'Questions', 'Count']],
+            body: data.map(row => [row.slNo, row.question, row.numOfWork]),
         });
-        doc.save("report.pdf");
-    });
-
-    function generateReportContent() {
-        let content = "";
-        const rows = document.querySelectorAll("#report-table tbody tr");
-        rows.forEach((row) => {
-            const cells = row.querySelectorAll("td");
-            // Skip form elements and empty rows
-            if (row.querySelector("form") || cells.length === 0) return;
-            const rowContent = Array.from(cells).map(cell => cell.textContent.trim()).join(", ");
-            content += rowContent + "<br>";
-        });
-        return content;
+        doc.save('report.pdf');
+    } else {
+        alert('No data available to generate the report!');
     }
-</script>
+}
+    </script>
 
 </body>
 </html>
