@@ -6,7 +6,7 @@
     <title>House Details</title>
     <style>
         body {
-            margin: 0;
+            margin: 10px;
             padding: 0;
             font-family: Arial, sans-serif;
         }
@@ -137,10 +137,14 @@ input[type="text"],
     </style>
 </head>
 <body>
-    <div>
+    <div style="display: flex; height: 50px;">
         <a class="btn" href="home" style="margin-top: 10px;">Back</a>
         <!-- <input type="text" id="searchInput" placeholder="Search..."> -->
-    
+        <form method="post" action="search_pregnant" style="display: flex; margin-right: auto; margin-left: auto;">
+            {% csrf_token %}
+            <input type="text" id="searchInput" name="house_no" placeholder="Search by House no. ..." style="width: 200px; margin-right: 10px;">
+            <button style="width: 100px; align-items: baseline;" type="submit">Search</button>
+        </form>
         <!-- <button class="btn" onclick="showForm()">Add</button> -->
      </div>
     <div id="cardContainer">
