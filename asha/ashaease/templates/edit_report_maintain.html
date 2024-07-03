@@ -163,11 +163,9 @@
         const reportName = "{{ reports.name }}";
         const reportDate = "{{ reports.date|date:'Y-m-d' }}";
 
-        // Add report name and date at the top
         doc.text(`Report Name: ${reportName}`, 10, 10);
         doc.text(`Report Date: ${reportDate}`, 10, 20);
 
-        // Fetch the table content
         const reportContent = generateReportContent();
         const lines = reportContent.split("<br>").map((line) => line.trim());
         let y = 30;
@@ -180,17 +178,22 @@
     });
 
     function generateReportContent() {
-        let content = "";
-        const rows = document.querySelectorAll("#report-table tbody tr");
-        rows.forEach((row) => {
-            const cells = row.querySelectorAll("td");
-            // Skip form elements and empty rows
-            if (row.querySelector("form") || cells.length === 0) return;
-            const rowContent = Array.from(cells).map(cell => cell.textContent.trim()).join(", ");
-            content += rowContent + "<br>";
-        });
-        return content;
-    }
+    let content = "";
+    let questionCounter;
+    {% for head in heading %}
+        content += `{{ forloop.counter }}. Heading: {{ head.heading }}<br>`;
+        questionCounter = 1; // Initialize a new counter for the inner loop
+        {% for q in questions %}
+            {% if q.heading == head %}
+                content += `--Question ${questionCounter}: {{ q.question_text }} => Count: {{ q.count }}<br>`;
+                questionCounter++;  // Increment the inner counter
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    return content;
+}
+    
+
 </script>
 
 </body>
