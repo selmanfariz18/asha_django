@@ -589,6 +589,18 @@ def children(request):
 
     return render(request, 'children.html', context)
 
+def search_children(request):
+    if request.method == "POST":
+        house_no = request.POST.get('house_no') 
+
+        houses = House.objects.filter(child_onboard=True, house_no=house_no)
+
+        context = {
+            'houses' : houses,
+        }
+
+        return render(request, 'children.html', context)
+
 def add_children_request(request):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -672,6 +684,18 @@ def pregnant(request):
 
     return render(request, 'pregnant.html', context)
 
+def search_pregnant(request):
+    if request.method == "POST":
+        house_no = request.POST.get('house_no')
+
+        houses = House.objects.filter(pregnant_onboard=True, house_no=house_no)
+
+        context = {
+            'houses' : houses,
+        }
+
+        return render(request, 'pregnant.html', context)
+
 def add_pregnant_request(request):
     if request.method == "POST":
         id = request.POST.get('id')
@@ -740,8 +764,6 @@ def add_pregnant(request):
         return redirect('pregnant')
 
 def patient(request):
-
-
     houses = House.objects.filter(user=request.user,child_onboard=True)
 
     context = {
@@ -749,6 +771,18 @@ def patient(request):
     }
 
     return render(request, 'patient.html', context)
+
+def search_patient(request):
+    if request.method == "POST":
+        house_no = request.POST.get('house_no')
+
+        houses = House.objects.filter(user=request.user,child_onboard=True, house_no=house_no)
+
+        context = {
+            'houses' : houses,
+        }
+
+        return render(request, 'patient.html', context)
 
 def add_patient_request(request):
     if request.method == "POST":
