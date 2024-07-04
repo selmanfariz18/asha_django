@@ -161,34 +161,48 @@
         const doc = new jsPDF();
 
         const reportName = "{{ reports.name }}";
-        const reportDate = "{{ reports.date|date:'Y-m-d' }}";
+        const reportDate = "{{ reports.date|date:'d-m-Y' }}";
 
-        // Add report name and date at the top
-        doc.text(`Report Name: ${reportName}`, 10, 10);
-        doc.text(`Report Date: ${reportDate}`, 10, 20);
+        doc.text(reportName, 10, 10);
+        doc.text(`Date: ${reportDate}`, 10, 20);
 
-        // Fetch the table content
         const reportContent = generateReportContent();
-        const lines = reportContent.split("<br>").map((line) => line.trim());
+        const lines = reportContent.split("\n");
         let y = 30;
         lines.forEach((line) => {
-            const splitText = doc.splitTextToSize(line, 180);
-            doc.text(splitText, 10, y);
-            y += splitText.length * 10;
+            let x = 10; // Default x-coordinate for headings
+            if (line.startsWith("        ")) {
+                x = 30; // 8 spaces for 2 tabs
+            } else if (line.startsWith("    ")) {
+                x = 20; // 4 spaces for 1 tab
+            }
+
+            // Split the text into lines that fit within the page width
+            const splitLines = doc.splitTextToSize(line.trim(), 180);
+            splitLines.forEach((splitLine) => {
+                doc.text(splitLine, x, y);
+                y += 10;
+            });
         });
-        doc.save("report.pdf");
+        doc.save("report {{request.user}}.pdf");
     });
 
     function generateReportContent() {
         let content = "";
-        const rows = document.querySelectorAll("#report-table tbody tr");
-        rows.forEach((row) => {
-            const cells = row.querySelectorAll("td");
-            // Skip form elements and empty rows
-            if (row.querySelector("form") || cells.length === 0) return;
-            const rowContent = Array.from(cells).map(cell => cell.textContent.trim()).join(", ");
-            content += rowContent + "<br>";
-        });
+        {% for head in heading %}
+            content += `{{ forloop.counter }}.{{ head.heading }}\n`;
+            {% for q in questions %}
+                {% if q.heading == head %}
+                    content += `    {{ q.question_text }}\n`; // 4 spaces for 1 tab
+                    content += `        Count: {{ q.count }}\n`; // 8 spaces for 2 tabs
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        content += `\n`;
+        content += `\n`;
+        content += `{{request.user}}\n`;
+        content += `Asha Worker\n`;
+        content += `Ward no. n/a\n`;
         return content;
     }
 </script>
