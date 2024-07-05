@@ -21,7 +21,6 @@ import datetime
 from ashaease.models import ProfileDetail, Event
 
 
-
 # Create your views here.
 
 
@@ -878,3 +877,5 @@ def edit_children(request):
         child = Children.objects.get(id=id)
 
     return render(request, 'edit_children.html', {'child':child})
+
+
